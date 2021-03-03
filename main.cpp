@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 {
     std::string MikoFileOutput = ReadMikoFileFunction("main.miko");
     
+    std::cout << MikoFileOutput << std::endl;
 
 
     return 0;
