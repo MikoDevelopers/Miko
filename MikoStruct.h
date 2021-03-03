@@ -63,8 +63,6 @@ namespace home_f{
 
     std::string print_(std::string data)
     {
-        
-
         return output;
     }
 }
