@@ -7,4 +7,5 @@ void Reader::read(std::string filename){
         cout << "Error, can't open file main.miko";
     }
 
+
 }
