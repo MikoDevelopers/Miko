@@ -1,4 +1,28 @@
 #include <string>
+#include <map>
+
+
+
+namespace main_maps {
+    class Map{
+        private:
+            int i = 0;
+            std::map <std::string, std::string> VariableNames;
+            std::map <std::string, std::string> VariableValues;
+        public:
+            std::map <std::string, std::string> getNames()
+            {
+                return this->VariableNames;
+            }
+            std::map <std::string, std::string> getValues()
+            {
+                return this->VariableValues;
+            }
+    };
+}
+
+
+
 
 
 
@@ -63,6 +87,6 @@ namespace home_f{
 
     std::string print_(std::string data)
     {
-        return output;
+        return data;
     }
 }
