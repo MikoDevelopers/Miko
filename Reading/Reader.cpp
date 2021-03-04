@@ -5,6 +5,6 @@ void Reader::read(std::string filename){
     ifstream in (filename);
     if(!in.is_open()){
         cout << "Can't find the file: " << filename << endl;
-        
+        exit(0);
     }
 }

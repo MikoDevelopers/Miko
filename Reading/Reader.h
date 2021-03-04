@@ -2,6 +2,7 @@
 #include<string>
 #include<iostream>
 #include <fstream>
+#include <stdlib.h>
 class Reader{
     public:
         void read(std::string file_name = "main.miku");
