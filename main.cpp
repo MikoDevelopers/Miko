@@ -6,8 +6,10 @@
 
 
 #include "MikoStruct.h"
-#include "Read/ReadMikoFile.h"
+//#include "Read/ReadMikoFile.h"
 //#include "Functions/PrintFunction/PrintFoo.h"
+
+
 
 
 
@@ -18,9 +20,12 @@ int main(int argc, char *argv[])
     //std::string *test = ReadMikoFileFunction("main.miko");
     //std::vector<std::string> ReadedMikoDatas = ReadMikoFileFunction("main.miko");
 
-    main_maps::Map test;
+//    main_maps::Map test;
+    settings::Setting test;
 
-    std::cout << test.getInt() << std::endl;
+    test.setToken("123");
+
+    std::cout << test.getToken() << std::endl;
 
 
     return 0;

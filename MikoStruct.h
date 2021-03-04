@@ -3,8 +3,52 @@
 
 
 
+
+namespace settings {
+    class Setting {
+        private:
+            std::string Bot;
+            std::string Token;
+            std::string Author;
+        public:
+            std::string setBot(std::string BotName)
+            {
+                this->Bot = BotName;
+
+                return this->Bot;
+            }
+            std::string setToken(std::string TokenName)
+            {
+                this->Token = TokenName;
+
+                return this->Token;
+            }
+            std::string setAuthor(std::string AuthorName)
+            {
+                this->Author = AuthorName;
+
+                return Author;
+            }
+
+            std::string getBot()
+            {
+                return this->Bot;
+            }
+            std::string getToken()
+            {
+                return this->Token;
+            }
+            std::string getAuthor()
+            {
+                return Author;
+            }
+    };
+}
+
+
+
 namespace main_maps {
-    class Map{
+    class Map {
         private:
             int i = 0;
             std::map <std::string, std::string> VariableNames;
@@ -20,7 +64,6 @@ namespace main_maps {
             }
     };
 }
-
 
 
 
