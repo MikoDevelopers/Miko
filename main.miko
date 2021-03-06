@@ -1,7 +1,7 @@
 settings (
     "Bot" : "Telegram",
-    "token" : "",
-    "author" : ""
+    "Token" : "321",
+    "Author" : "123"
 )
 
 include (

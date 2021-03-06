@@ -10,6 +10,7 @@ namespace settings {
             std::string Bot;
             std::string Token;
             std::string Author;
+            std::vector<std::string> IncludesLibs;
         public:
             std::string setBot(std::string BotName)
             {
