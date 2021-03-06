@@ -155,5 +155,82 @@ namespace Analizer {
 
                 return returnAuthorStr;
             }
+
+            std::vector<std::string> changeReadedMikoDatas(std::vector<std::string> must_be_changed__ReadedMikoDatas)
+            {
+                std::vector<std::string> New_Vector;
+
+
+                for (int i = this->end_of_settings + 1; i <= must_be_changed__ReadedMikoDatas.size() - (this->end_of_settings - this->start_of_settings); i++)
+                {
+                    New_Vector.push_back(must_be_changed__ReadedMikoDatas[i]);
+                }
+
+                return New_Vector;
+            }
+    };
+
+
+    class FindIncludes {
+        private:
+            int start_include_point;
+            int end_include_point;
+        public:
+            std::vector<std::string> IncludesLibsVector;
+
+            int findStartPoint(std::vector<std::string> AcceptedDatas)
+            {
+                int temp;
+                for (int i = 0; i < AcceptedDatas.size(); i++)
+                {
+                    std::string tempData = AcceptedDatas[i];
+                    std::string find = "include";
+
+                    temp = tempData.find(find);
+                    if (temp != -1)
+                    {
+                        this->start_include_point = i;
+            
+                        return this->start_include_point;
+                    }
+                }
+                return this->start_include_point;
+            }
+
+            int findEndPoint(std::vector<std::string> AcceptedDatas)
+            {
+                int fep;
+                for (int e = 0; e < AcceptedDatas.size(); e++)
+                {
+                    std::string tempData = AcceptedDatas[e];
+                    std::string findEnd = ")";
+
+                    fep = tempData.find(findEnd);
+                    if (fep != -1)
+                    {
+                        this->end_include_point = e;
+
+                        return this->end_include_point;
+                    }
+                }
+                return this->end_include_point;
+            }
+
+
+            std::vector<std::string> findLibs(std::vector<std::string> AcceptedDatas)
+            {
+                for (int i = this->start_include_point + 1; i < this->end_include_point; i++)
+                {
+                    std::string tempLibData = "";
+                    tempLibData = AcceptedDatas[i].substr(AcceptedDatas[i].find("\""), AcceptedDatas[i].find(","));
+                    tempLibData = tempLibData.substr(tempLibData.find("\""), tempLibData.find(","));
+                    tempLibData = tempLibData.substr(tempLibData.find("\"") + 1, tempLibData.length() - 2);
+                    
+                    this->IncludesLibsVector.push_back(tempLibData);
+                }
+
+                return this->IncludesLibsVector;
+            }
+            
     };
 }

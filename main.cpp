@@ -24,23 +24,26 @@ int main(int argc, char *argv[])
 
     std::cout << "Datas was readed..." << std::endl;
 
-//    main_maps::Map test;
-//    settings::Setting test;//test.setToken("123");//std::cout << test.getToken() << std::endl;
-
     Analizer::FindSettings Anlzr;
     Anlzr.findStartPoint(ReadedMikoDatas);
     Anlzr.findEndPoint(ReadedMikoDatas);
     Anlzr.appendTempDatasForWork(ReadedMikoDatas);
+
+    ReadedMikoDatas = Anlzr.changeReadedMikoDatas(ReadedMikoDatas);
+
 
     settings::Setting GlobalSettings;
     GlobalSettings.setBot(Anlzr.findBot());
     GlobalSettings.setToken(Anlzr.findToken());
     GlobalSettings.setAuthor(Anlzr.findAuthor());
 
+    
+    Analizer::FindIncludes FindInc;
+    FindInc.findStartPoint(ReadedMikoDatas);
+    FindInc.findEndPoint(ReadedMikoDatas);
 
-    std::cout << "\t\t\t" << GlobalSettings.getBot() << std::endl;
-    std::cout << "\t\t\t" << GlobalSettings.getToken() << std::endl;
-    std::cout << "\t\t\t" << GlobalSettings.getAuthor() << std::endl;
+
+    GlobalSettings.pushLibs(FindInc.findLibs(ReadedMikoDatas));
 
 
 

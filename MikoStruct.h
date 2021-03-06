@@ -30,6 +30,15 @@ namespace settings {
 
                 return Author;
             }
+            std::vector<std::string> pushLibs(std::vector<std::string> LibVector)
+            {
+                this->IncludesLibs = LibVector;
+
+                return this-> IncludesLibs;
+            }
+
+
+
 
             std::string getBot()
             {
