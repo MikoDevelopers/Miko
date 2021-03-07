@@ -85,17 +85,16 @@ namespace Analizer {
                     if (tempBot != -1)
                     {
                         findedBotStr += TempDatasForWork[i].substr(TempDatasForWork[i].find(":"), TempDatasForWork[i].find(","));
+
+                        for (int i = 0; i <= 4; i++)
+                        {
+                            if (findedBotStr.find(masApi[i]) != -1)
+                            {
+                                return masApi[i];
+                            }
+                        }
                     }
                 }
-
-                for (int i = 0; i <= 4; i++)
-                {
-                    if (findedBotStr.find(masApi[i]) != -1)
-                    {
-                        return masApi[i];
-                    }
-                }
-
                 return "";
             }
 
@@ -112,19 +111,19 @@ namespace Analizer {
                     if (tempToken != -1)
                     {
                         findedTokenStr += TempDatasForWork[i].substr(TempDatasForWork[i].find(":"), TempDatasForWork[i].find(","));
+                        findedTokenStr = findedTokenStr.substr(findedTokenStr.find("\""), findedTokenStr.find(","));
+                        findedTokenStr = findedTokenStr.substr(findedTokenStr.find("\""), findedTokenStr.find(" "));
+                        findedTokenStr = findedTokenStr.substr(findedTokenStr.find("\""), findedTokenStr.find(","));
+
+                        for (int i = 1; i < findedTokenStr.length() - 1; i++)
+                        {
+                            returnTokenStr += findedTokenStr[i];
+                        }
+
+                        return returnTokenStr;
                     }
                 }
-
-                findedTokenStr = findedTokenStr.substr(findedTokenStr.find("\""), findedTokenStr.find(","));
-                findedTokenStr = findedTokenStr.substr(findedTokenStr.find("\""), findedTokenStr.find(" "));
-                findedTokenStr = findedTokenStr.substr(findedTokenStr.find("\""), findedTokenStr.find(","));
-
-                for (int i = 1; i < findedTokenStr.length() - 1; i++)
-                {
-                    returnTokenStr += findedTokenStr[i];
-                }
-
-                return returnTokenStr;
+               return "";
             }
 
 
@@ -141,27 +140,26 @@ namespace Analizer {
                     if (tempAuthor != -1)
                     {
                         findedAuthorStr += TempDatasForWork[i].substr(TempDatasForWork[i].find(":"), TempDatasForWork[i].length());
+                        findedAuthorStr = findedAuthorStr.substr(findedAuthorStr.find("\""), findedAuthorStr.find(","));
+                        findedAuthorStr = findedAuthorStr.substr(findedAuthorStr.find("\""), findedAuthorStr.find(" "));
+                        findedAuthorStr = findedAuthorStr.substr(findedAuthorStr.find("\""), findedAuthorStr.find(","));
+
+                        for (int i = 1; i < findedAuthorStr.length() - 1; i++)
+                        {
+                            returnAuthorStr += findedAuthorStr[i];
+                        }
+
+                        return returnAuthorStr;
                     }
                 }
-
-                findedAuthorStr = findedAuthorStr.substr(findedAuthorStr.find("\""), findedAuthorStr.find(","));
-                findedAuthorStr = findedAuthorStr.substr(findedAuthorStr.find("\""), findedAuthorStr.find(" "));
-                findedAuthorStr = findedAuthorStr.substr(findedAuthorStr.find("\""), findedAuthorStr.find(","));
-
-                for (int i = 1; i < findedAuthorStr.length() - 1; i++)
-                {
-                    returnAuthorStr += findedAuthorStr[i];
-                }
-
-                return returnAuthorStr;
+                return "";
             }
 
             std::vector<std::string> changeReadedMikoDatas(std::vector<std::string> must_be_changed__ReadedMikoDatas)
             {
                 std::vector<std::string> New_Vector;
 
-
-                for (int i = this->end_of_settings + 1; i <= must_be_changed__ReadedMikoDatas.size() - (this->end_of_settings - this->start_of_settings); i++)
+                for (int i = this->end_of_settings + 1; i < must_be_changed__ReadedMikoDatas.size(); i++)
                 {
                     New_Vector.push_back(must_be_changed__ReadedMikoDatas[i]);
                 }
@@ -231,6 +229,39 @@ namespace Analizer {
 
                 return this->IncludesLibsVector;
             }
-            
+
+
+            std::vector<std::string> changeReadedMikoDatas(std::vector<std::string> must_be_changed__ReadedMikoDatas)
+            {
+                std::vector<std::string> New_Vector;
+
+
+                for (int i = this->end_include_point; i < must_be_changed__ReadedMikoDatas.size(); i++)
+                {
+                    New_Vector.push_back(must_be_changed__ReadedMikoDatas[i]);
+                }
+
+                return New_Vector;
+            }
+    };
+
+
+    class Find_IEE {
+        
+    };
+
+
+    class FindCycles {
+
+    };
+
+
+    class FindFoo {
+
+    };
+
+
+    class FindClass {
+
     };
 }

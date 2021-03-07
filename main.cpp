@@ -5,12 +5,11 @@
 #include <map>
 
 
-#include "MikoStruct.h"
-#include "Read/ReadMikoFile.h"
+#include "MikoStruct.h"// главный заголовойный файл
+#include "Read/ReadMikoFile.h"// файл для получения исходника .miko
 //#include "Functions/PrintFunction/PrintFoo.h"
 
-#include "Analizator/CodeAnalizer.hpp"
-
+#include "Analizator/CodeAnalizer.hpp"// анализатор исходного кода .miko
 
 
 
@@ -18,37 +17,53 @@
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Start reading..." << std::endl;
-    //std::string *test = ReadMikoFileFunction("main.miko");
-    std::vector<std::string> ReadedMikoDatas = ReadMikoFileFunction("main.miko");
+    std::cout << "Start reading...\n" << std::endl;// начало программы
+    std::vector<std::string> ReadedMikoDatas = ReadMikoFileFunction("main.miko");// получение исходного кода программы
 
     std::cout << "Datas was readed..." << std::endl;
 
     Analizer::FindSettings Anlzr;
-    Anlzr.findStartPoint(ReadedMikoDatas);
-    Anlzr.findEndPoint(ReadedMikoDatas);
+    Anlzr.findStartPoint(ReadedMikoDatas);// поиск точки начала settings
+    Anlzr.findEndPoint(ReadedMikoDatas);// поиск точки конца settings
     Anlzr.appendTempDatasForWork(ReadedMikoDatas);
 
-    ReadedMikoDatas = Anlzr.changeReadedMikoDatas(ReadedMikoDatas);
+    std::cout << "Points of settings is finded...\n" << std::endl;
 
+    ReadedMikoDatas = Anlzr.changeReadedMikoDatas(ReadedMikoDatas);// удаление обработанных данных
+
+    std::cout << "Set settings..." << std::endl;
 
     settings::Setting GlobalSettings;
-    GlobalSettings.setBot(Anlzr.findBot());
-    GlobalSettings.setToken(Anlzr.findToken());
-    GlobalSettings.setAuthor(Anlzr.findAuthor());
+    GlobalSettings.setBot(Anlzr.findBot()); // установка типа бота в глобальных настройках
+    GlobalSettings.setToken(Anlzr.findToken());// установка токена в глобальные настройки
+    GlobalSettings.setAuthor(Anlzr.findAuthor());// установка автора в глобальные настройки
 
-    
-    Analizer::FindIncludes FindInc;
-    FindInc.findStartPoint(ReadedMikoDatas);
-    FindInc.findEndPoint(ReadedMikoDatas);
+    std::cout << "Successfully...\n" << std::endl;
+
+    std::cout << "Finding points of includes..." << std::endl;
+    Analizer::FindIncludes FindInc;// класс для поиска подключённых библиотек
+    FindInc.findStartPoint(ReadedMikoDatas);// поиск точки начала подключённых библиотек
+    FindInc.findEndPoint(ReadedMikoDatas);// поиск точки конца подключённых библиотек
+
+    std::cout << "Points of includes is finded...\nLibs was includes..." << std::endl;
+
+    GlobalSettings.pushLibs(FindInc.findLibs(ReadedMikoDatas));// добавление подключёееых библиотек в глобальные настройки
+
+    ReadedMikoDatas = Anlzr.changeReadedMikoDatas(ReadedMikoDatas);// удаление обработанных данных
+
+    std::cout << "\n\tStart analize " << "main.miko" << " file...\n" << std::endl;
 
 
-    GlobalSettings.pushLibs(FindInc.findLibs(ReadedMikoDatas));
+
+
+
+
 
 
 
     std::cout << "----------------" << std::endl;
-    std::cout << "Close program..." << std::endl;
+    std::cout << "Close program..." << std::endl;//конец программы
+
 
 
     return 0;

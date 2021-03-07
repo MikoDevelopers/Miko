@@ -57,23 +57,37 @@ namespace settings {
 
 
 
-namespace main_maps {
+namespace MainMaps {
     class Map {
         private:
-            int i = 0;
-            std::map <std::string, std::string> VariableNames;
-            std::map <std::string, std::string> VariableValues;
+            std::map <std::string, std::string> VariableTypeNames;// {"a" : "int", "b" : "str"}
+            std::map <std::string, std::string> VariableValues;// {"a" : "2", "b" : "2"}
         public:
-            std::map <std::string, std::string> getNames()
+            std::map <std::string, std::string> getTypeNames()
             {
-                return this->VariableNames;
+                return this->VariableTypeNames;
             }
             std::map <std::string, std::string> getValues()
             {
                 return this->VariableValues;
             }
+            
+
+            /*bool uppdateMaps(std::string NameOfVariable, std::string TypeOfVariable, std::string ValueOfVariable)
+            {
+                VariableTypeNames[NameOfVariable] = TypeOfVariable;
+                VariableTypeNames[VariableValues] = ValueOfVariable;
+
+                return true;
+            }
+
+*/
+
+
     };
 }
+
+
 
 
 
