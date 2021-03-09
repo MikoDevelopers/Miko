@@ -264,4 +264,83 @@ namespace Analizer {
     class FindClass {
 
     };
+
+
+    class MainAnalizerCycle {
+        private:
+            std::vector<std::string> MainVector;
+        public:
+            std::vector<std::string> getMainVector()
+            {
+                return this->MainVector;
+            }
+            void runAnalizerCycle(std::vector<std::string> &CopyVector, auto &mainMapLink)
+            {
+                for (int i = 0; i < CopyVector.size(); i++)
+                {
+                    if ((CopyVector[i].find("int ") != -1))
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("int ") + 4, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        
+
+                        mainMapLink.uppdateMaps(name, "int", value);
+
+
+                    } else if (CopyVector[i].find("str ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("str ") + 4, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        value = value.substr(1, value.length() - 2);
+
+
+                        mainMapLink.uppdateMaps(name, "str", value);
+                        
+
+                    } else if (CopyVector[i].find("float ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("float ") + 6, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+
+                        mainMapLink.uppdateMaps(name, "float", value);
+
+                    } else if (CopyVector[i].find("list ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("list ") + 5, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        
+
+                        mainMapLink.uppdateMaps(name, "list", value);
+                     
+                    } else if (CopyVector[i].find("typle ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("typle ") + 6, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        
+
+                        mainMapLink.uppdateMaps(name, "typle", value);
+                    }
+                }
+            }
+    };
 }

@@ -10,11 +10,9 @@ include (
 )
 
 
-int a = 12;
-int b = 12;
 
 
-
+typle a = (0, 1, 1);
 
 
 

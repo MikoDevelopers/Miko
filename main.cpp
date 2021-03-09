@@ -53,8 +53,13 @@ int main(int argc, char *argv[])
 
     std::cout << "\n\tStart analize " << "main.miko" << " file...\n" << std::endl;
 
+    
+    MainMaps::Map mainMap;// создание объекта клсса который отвечает за словарь   
+    //example:   ->    mainMap.getVariableValues()["a"]
 
 
+    Analizer::MainAnalizerCycle AnalizerCycle;
+    AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap);
 
 
 
