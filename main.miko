@@ -11,19 +11,33 @@ include (
 
 
 
+if (3 == 3)
+{
+    print(123);
+}
 
-typle a = (0, 1, 1);
+if (2 != 1)
+{
+    print(123);
+}
+
+if (2 > -1)
+{
+    print(123);
+}
+
+if (2 < 5)
+{
+    print(123);
+}
 
 
+if (4 >= 3)
+{
+    print(123);
+}
 
-Bot {
-    onMessage(message):
-        print("Hew message");
-        if (message == "Hello")
-        {
-            Bot.send(id or username, "World")
-        }
-
-    onVoice(message):
-        ...
+if (-9 <= 4)
+{
+    print(123);
 }

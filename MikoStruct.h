@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <map>
 
@@ -62,12 +63,16 @@ namespace MainMaps {
         private:
             std::map <std::string, std::string> VariableTypeNames;// {"a" : "int", "b" : "str"}
             std::map <std::string, std::string> VariableValues;// {"a" : "2", "b" : "2"}
-            std::map <int, bool> IEE_result;// {pos : result, 5 : true}
+            std::map <int, bool> IEE_result;// {pos : result, 5 : true, 13 : false}
             std::map <std::string, int> PosFoo;// {"main" : 1, "add_" : 10}
             std::map <std::string, int> PosClass;// {"People" : 15}
         public:
-            std::map <std::string, std::string> getVariableTypeNames(){return this->VariableTypeNames;}
-            std::map <std::string, std::string> getVariableValues(){return this->VariableValues;}
+            std::map <std::string, std::string> getVariableTypeNames(){
+                return this->VariableTypeNames;
+            }
+            std::map <std::string, std::string> getVariableValues(){
+                return this->VariableValues;
+            }
             /*std::map <std::string, std::string> getMap(std::string NameOfMap)
             {
                 if (NameOfMap == "VariableTypeNames")

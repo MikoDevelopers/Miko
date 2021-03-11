@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-
+//#include "../MikoStruct.h"
 
 
 namespace Analizer {
@@ -246,8 +246,164 @@ namespace Analizer {
     };
 
 
-    class Find_IEE {
-        
+    class Find_IEE {//if elif else
+        private:
+            int startPoint;
+            int endPoint;
+
+            bool DataIsFinded = false;
+            int if_data_start;
+            int if_data_end;
+            std::string IfDatas = "";
+            bool IfDatasIsFull = false;
+        public:
+            int findIEE_Foo(std::vector<std::string> &Datas, int &PositionOfDatas)
+            {
+                for (int i = PositionOfDatas; i < Datas.size(); i++)
+                {
+                    if (this->DataIsFinded != true)
+                    {
+                        if (Datas[i].find("(") != -1)
+                        {
+                            this->if_data_start = Datas[i].find("(");
+                        }
+                        if (Datas[i].find(")") != -1)
+                        {
+                            this->if_data_end = Datas[i].find(")");
+                            this->DataIsFinded = true;
+                        }
+                    }
+                    if (this->DataIsFinded && this->IfDatasIsFull != true)
+                    {
+                        for (int DataInfoPos = this->if_data_start + 1; DataInfoPos < this->if_data_end; DataInfoPos++)
+                        {
+                            this->IfDatas += Datas[i][DataInfoPos];
+                        }
+                        this->IfDatasIsFull = true;
+                    }
+
+
+
+
+                    if (this->IfDatas.find("==") != -1)
+                    {
+                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("=="));
+                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("==") + 2, this->IfDatas.length());
+                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                        if (LeftIfDatas == RigthIfDatas)
+                        {
+                            std::cout << LeftIfDatas << "  ==  " << RigthIfDatas << std::endl;
+                        }
+                        break;
+                    }
+
+                    if (this->IfDatas.find("!=") != -1)
+                    {
+                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("!="));
+                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("!=") + 2, this->IfDatas.length());
+                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                        if (LeftIfDatas != RigthIfDatas)
+                        {
+                            std::cout << LeftIfDatas << "  !=  " << RigthIfDatas << std::endl;
+                        }
+                        break;
+                    }
+
+                    if (this->IfDatas.find(">") != -1)
+                    {
+                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find(">"));
+                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find(">") + 2, this->IfDatas.length());
+                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                        if (LeftIfDatas > RigthIfDatas)
+                        {
+                            std::cout << LeftIfDatas << "  >  " << RigthIfDatas << std::endl;
+                        }
+                        break;
+                    }
+
+                    if (this->IfDatas.find("<") != -1)
+                    {
+                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("<"));
+                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("<") + 2, this->IfDatas.length());
+                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                        if (LeftIfDatas < RigthIfDatas)
+                        {
+                            std::cout << LeftIfDatas << "  <  " << RigthIfDatas << std::endl;
+                        }
+                        break;
+                    }
+
+                    if (this->IfDatas.find(">=") != -1)
+                    {
+                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find(">="));
+                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find(">=") + 2, this->IfDatas.length());
+                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                        if (LeftIfDatas >= RigthIfDatas)
+                        {
+                            std::cout << LeftIfDatas << "  >=  " << RigthIfDatas << std::endl;
+                        }
+                        break;
+                    }
+
+                    if (this->IfDatas.find("<=") != -1)
+                    {
+                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("<="));
+                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("<=") + 2, this->IfDatas.length());
+                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                        if (LeftIfDatas <= RigthIfDatas)
+                        {
+                            std::cout << LeftIfDatas << "  <=  " << RigthIfDatas << std::endl;
+                        }
+                        break;
+                    }
+
+
+
+                    /*if (Datas[i].find("{") != -1)
+                    {
+                        this->startPoint = i;
+                    } else if (Datas[i].find("}") != -1)
+                    {
+                        this->endPoint = i;
+                    }*/
+
+
+                    return_back();// возврат значений по умолчанию
+                }
+
+
+                return PositionOfDatas;
+            }
+
+            void return_back()
+            {
+                this->startPoint = 0;
+                this->endPoint = 0;
+
+                this->DataIsFinded = false;
+                this->if_data_start = 0;
+                this->if_data_end = 0;
+                this->IfDatas = "";
+                this->IfDatasIsFull = false;
+            }
     };
 
 
@@ -340,6 +496,23 @@ namespace Analizer {
 
                         mainMapLink.uppdateMaps(name, "typle", value);
                     }
+
+
+
+                    if (CopyVector[i].find("if") != -1)
+                    {
+                        Find_IEE test;
+                        test.findIEE_Foo(CopyVector, i);
+
+
+                    } else if (CopyVector[i].find("elif") != -1)
+                    {
+                        std::cout << CopyVector[i] << std::endl;
+                    } else if (CopyVector[i].find("else") != -1)
+                    {
+                        std::cout << CopyVector[i] << std::endl;
+                    }
+
                 }
             }
     };
