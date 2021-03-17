@@ -6,6 +6,13 @@
 
 
 namespace Analizer {
+    bool returnMap()
+    {
+        return true;
+    }
+
+
+
     class FindSettings {
         private:
             int start_of_settings;
@@ -430,7 +437,8 @@ namespace Analizer {
             {
                 return this->MainVector;
             }
-            void runAnalizerCycle(std::vector<std::string> &CopyVector, auto &mainMapLink)
+            template <class T>
+            void runAnalizerCycle(std::vector<std::string> &CopyVector, T &mainMapLink)
             {
                 for (int i = 0; i < CopyVector.size(); i++)
                 {

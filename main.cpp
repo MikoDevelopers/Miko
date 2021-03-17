@@ -3,6 +3,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <typeinfo>
+
+//#include <D:\Python37\Python\include\Python.h>
+
+#include "Python/lib.h"
 
 
 #include "MikoStruct.h"// главный заголовойный файл
@@ -56,9 +61,13 @@ int main(int argc, char *argv[])
     
     MainMaps::Map mainMap;// создание объекта клсса который отвечает за словарь   
     //example:   ->    mainMap.getVariableValues()["a"]
-
+    
 
     Analizer::MainAnalizerCycle AnalizerCycle;
+    //MainMaps::Map *LinkOfMap = new MainMaps::Map;
+
+//    std::cout << typeid(Analizer::returnMap(mainMap)).name() << std::endl;
+
     AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap);
 
 
@@ -71,8 +80,12 @@ int main(int argc, char *argv[])
 
 
 
+
     return 0;
 }
 
 
 //g++ main.cpp Analizator/CodeAnalizer.cpp Read/ReadMikoFile.cpp -o main && main
+//x86_64-w64-mingw32-gcc -mconsole -DSIZEOF_VOID_P=8 -DMS_WIN64 lib.c -ID:\Python37\Python\include -LD:\Python37\Python\libs -lpython37 -o output
+
+//x86_64-w64-mingw32-gcc main.cpp Analizator/CodeAnalizer.cpp Read/ReadMikoFile.cpp -mconsole -DSIZEOF_VOID_P=8 -DMS_WIN64 Python\lib.c -ID:\Python37\Python\include -LD:\Python37\Python\libs -lpython37 -o main

@@ -1,2 +1,8 @@
-cpdef int run(int a, int b):
-    return a * b
+from tkinter import *
+
+cdef public void function():
+    root = Tk()
+    root.mainloop()
+
+if __name__ == "__main__":
+    function()
