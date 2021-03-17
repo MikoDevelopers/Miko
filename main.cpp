@@ -5,9 +5,10 @@
 #include <map>
 #include <typeinfo>
 
+
 //#include <D:\Python37\Python\include\Python.h>
 
-#include "Python/lib.h"
+//#include "Python/lib.h"
 
 
 #include "MikoStruct.h"// главный заголовойный файл
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
     
     MainMaps::Map mainMap;// создание объекта клсса который отвечает за словарь   
     //example:   ->    mainMap.getVariableValues()["a"]
-    
+
 
     Analizer::MainAnalizerCycle AnalizerCycle;
     //MainMaps::Map *LinkOfMap = new MainMaps::Map;

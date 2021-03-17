@@ -5,14 +5,27 @@
 //#include "../MikoStruct.h"
 
 
-namespace Analizer {
-    bool returnMap()
+void ReturnTrueOrFalse(std::string IfDatas)
+{
+    if (IfDatas.find("==") != -1)
     {
-        return true;
+        std::string LeftIfDatas = IfDatas.substr(0, IfDatas.find("=="));
+        std::string RigthIfDatas = IfDatas.substr(IfDatas.find("==") + 2, IfDatas.length());
+        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+        if (LeftIfDatas == RigthIfDatas)
+        {
+            std::cout << LeftIfDatas << "  ==  " << RigthIfDatas << std::endl;
+            //return true;
+        }
     }
+}
 
 
 
+namespace Analizer {
     class FindSettings {
         private:
             int start_of_settings;
@@ -289,9 +302,10 @@ namespace Analizer {
                         this->IfDatasIsFull = true;
                     }
 
-
-
-
+//                    std::cout << ReturnTrueOrFalse(this->IfDatas) << std::endl;
+                    std::string test = this->IfDatas;
+                    ReturnTrueOrFalse(test);
+/*
                     if (this->IfDatas.find("==") != -1)
                     {
                         auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("=="));
@@ -382,7 +396,7 @@ namespace Analizer {
                         break;
                     }
 
-
+*/
 
                     /*if (Datas[i].find("{") != -1)
                     {
