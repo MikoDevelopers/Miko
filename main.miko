@@ -1,5 +1,0 @@
-settings{
-    server "t.me"
-    token  "..."
-    command_list
-}
