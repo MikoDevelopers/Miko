@@ -1,0 +1,43 @@
+settings (
+    "Bot" : "Telegram",
+    "Token" : "321",
+    "Author" : "123"
+)
+
+include (
+    "print",
+    "dict"
+)
+
+
+
+if (3 == 3)
+{
+    print(123);
+}
+
+if (2 != 1)
+{
+    print(123);
+}
+
+if (2 > -1)
+{
+    print(123);
+}
+
+if (2 > 5)
+{
+    print(123);
+}
+
+
+if (4 >= 3)
+{
+    print(123);
+}
+
+if (-9 <= 4)
+{
+    print(123);
+}
