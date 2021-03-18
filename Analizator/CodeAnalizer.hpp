@@ -2,30 +2,136 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 //#include "../MikoStruct.h"
-
-
-void ReturnTrueOrFalse(std::string IfDatas)
-{
-    if (IfDatas.find("==") != -1)
-    {
-        std::string LeftIfDatas = IfDatas.substr(0, IfDatas.find("=="));
-        std::string RigthIfDatas = IfDatas.substr(IfDatas.find("==") + 2, IfDatas.length());
-        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-        if (LeftIfDatas == RigthIfDatas)
-        {
-            std::cout << LeftIfDatas << "  ==  " << RigthIfDatas << std::endl;
-            //return true;
-        }
-    }
-}
+#define DEBUG true
 
 
 
 namespace Analizer {
+    class GetAllMaps {
+        public:
+            std::map <std::string, std::string> VariableTypeNames;// {"a" : "int", "b" : "str"}
+            std::map <std::string, std::string> VariableValues;// {"a" : "2", "b" : "2"}
+            std::map <int, bool> IEE_result;// {pos : result, 5 : true, 13 : false}
+            std::map <std::string, int> PosFoo;// {"main" : 1, "add_" : 10}
+            std::map <std::string, int> PosClass;// {"People" : 15}
+        //public:
+            template <class T>
+            void SetMaps(T TestMap)
+            {
+                #ifdef DEBUG
+                    std::cout << "GetAllMaps is runing..." << std::endl;
+                #endif
+                this->VariableTypeNames = TestMap.getVariableTypeNames();
+                this->VariableValues = TestMap.getVariableValues();
+                this->IEE_result = TestMap.getIEE_result();
+                this->PosFoo = TestMap.getPosFoo();
+                this->PosClass = TestMap.getPosClass();
+                #ifdef DEBUG
+                    std::cout << "GetAllMaps is finished..." << std::endl;
+                #endif
+            }
+            void prinT()
+            {
+                std::cout << "Print" << std::endl;
+            }
+    };
+
+
+    class RerFoo{
+        public:
+            void ReturnTrueOrFalse(std::string IfDatas)
+            {
+                
+                if (IfDatas.find("==") != -1)
+                {
+                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("=="));
+                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("==") + 2, IfDatas.length());
+                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                    //std::cout << GetAllMaps.VariableTypeNames << std::endl;
+                    /*if (LeftIfDatas == RigthIfDatas)
+                    {
+                        std::cout << LeftIfDatas << "  ==  " << RigthIfDatas << std::endl;
+                    }*/
+                }
+
+                if (IfDatas.find("!=") != -1)
+                {
+                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("!="));
+                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("!=") + 2, IfDatas.length());
+                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                    if (LeftIfDatas != RigthIfDatas)
+                    {
+                        std::cout << LeftIfDatas << "  !=  " << RigthIfDatas << std::endl;
+                    }
+                }
+
+                if (IfDatas.find(">") != -1)
+                {
+                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find(">"));
+                    auto RigthIfDatas = IfDatas.substr(IfDatas.find(">") + 2, IfDatas.length());
+                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                    if (LeftIfDatas > RigthIfDatas)
+                    {
+                        std::cout << LeftIfDatas << "  >  " << RigthIfDatas << std::endl;
+                    }
+                }
+
+                if (IfDatas.find("<") != -1)
+                {
+                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("<"));
+                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("<") + 2, IfDatas.length());
+                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                    if (LeftIfDatas < RigthIfDatas)
+                    {
+                        std::cout << LeftIfDatas << "  <  " << RigthIfDatas << std::endl;
+                    }
+                }
+
+                if (IfDatas.find(">=") != -1)
+                {
+                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find(">="));
+                    auto RigthIfDatas = IfDatas.substr(IfDatas.find(">=") + 2, IfDatas.length());
+                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                    if (LeftIfDatas >= RigthIfDatas)
+                    {
+                        std::cout << LeftIfDatas << "  >=  " << RigthIfDatas << std::endl;
+                    }
+                }
+
+                if (IfDatas.find("<=") != -1)
+                {
+                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("<="));
+                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("<=") + 2, IfDatas.length());
+                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+
+
+                    if (LeftIfDatas <= RigthIfDatas)
+                    {
+                        std::cout << LeftIfDatas << "  <=  " << RigthIfDatas << std::endl;
+                    }
+                }
+            }
+    };
+
+
     class FindSettings {
         private:
             int start_of_settings;
@@ -302,101 +408,16 @@ namespace Analizer {
                         this->IfDatasIsFull = true;
                     }
 
-//                    std::cout << ReturnTrueOrFalse(this->IfDatas) << std::endl;
-                    std::string test = this->IfDatas;
-                    ReturnTrueOrFalse(test);
-/*
-                    if (this->IfDatas.find("==") != -1)
+                    if (
+                        (this->IfDatas.find("==") != -1) || (this->IfDatas.find("!=") != -1) ||
+                        (this->IfDatas.find(">") != -1) || (this->IfDatas.find("<") != -1) ||
+                        (this->IfDatas.find("<=") != -1) || (this->IfDatas.find(">=") != -1)
+                    )
                     {
-                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("=="));
-                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("==") + 2, this->IfDatas.length());
-                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                        if (LeftIfDatas == RigthIfDatas)
-                        {
-                            std::cout << LeftIfDatas << "  ==  " << RigthIfDatas << std::endl;
-                        }
-                        break;
+                        RerFoo run_check_foo;
+                        run_check_foo.ReturnTrueOrFalse(IfDatas);
                     }
 
-                    if (this->IfDatas.find("!=") != -1)
-                    {
-                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("!="));
-                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("!=") + 2, this->IfDatas.length());
-                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                        if (LeftIfDatas != RigthIfDatas)
-                        {
-                            std::cout << LeftIfDatas << "  !=  " << RigthIfDatas << std::endl;
-                        }
-                        break;
-                    }
-
-                    if (this->IfDatas.find(">") != -1)
-                    {
-                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find(">"));
-                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find(">") + 2, this->IfDatas.length());
-                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                        if (LeftIfDatas > RigthIfDatas)
-                        {
-                            std::cout << LeftIfDatas << "  >  " << RigthIfDatas << std::endl;
-                        }
-                        break;
-                    }
-
-                    if (this->IfDatas.find("<") != -1)
-                    {
-                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("<"));
-                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("<") + 2, this->IfDatas.length());
-                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                        if (LeftIfDatas < RigthIfDatas)
-                        {
-                            std::cout << LeftIfDatas << "  <  " << RigthIfDatas << std::endl;
-                        }
-                        break;
-                    }
-
-                    if (this->IfDatas.find(">=") != -1)
-                    {
-                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find(">="));
-                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find(">=") + 2, this->IfDatas.length());
-                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                        if (LeftIfDatas >= RigthIfDatas)
-                        {
-                            std::cout << LeftIfDatas << "  >=  " << RigthIfDatas << std::endl;
-                        }
-                        break;
-                    }
-
-                    if (this->IfDatas.find("<=") != -1)
-                    {
-                        auto LeftIfDatas = this->IfDatas.substr(0, this->IfDatas.find("<="));
-                        auto RigthIfDatas = this->IfDatas.substr(this->IfDatas.find("<=") + 2, this->IfDatas.length());
-                        LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                        RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                        if (LeftIfDatas <= RigthIfDatas)
-                        {
-                            std::cout << LeftIfDatas << "  <=  " << RigthIfDatas << std::endl;
-                        }
-                        break;
-                    }
-
-*/
 
                     /*if (Datas[i].find("{") != -1)
                     {
@@ -523,17 +544,17 @@ namespace Analizer {
 
                     if (CopyVector[i].find("if") != -1)
                     {
-                        Find_IEE test;
-                        test.findIEE_Foo(CopyVector, i);
+                        Find_IEE start_iee;
+                        start_iee.findIEE_Foo(CopyVector, i);
+                    }
 
-
-                    } else if (CopyVector[i].find("elif") != -1)
+                    /*} else if (CopyVector[i].find("elif") != -1)
                     {
                         std::cout << CopyVector[i] << std::endl;
                     } else if (CopyVector[i].find("else") != -1)
                     {
                         std::cout << CopyVector[i] << std::endl;
-                    }
+                    }*/
 
                 }
             }

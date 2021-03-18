@@ -73,6 +73,15 @@ namespace MainMaps {
             std::map <std::string, std::string> getVariableValues(){
                 return this->VariableValues;
             }
+            std::map <int, bool> getIEE_result(){
+                return this->IEE_result;
+            }
+            std::map <std::string, int> getPosFoo(){
+                return this->PosFoo;
+            }
+            std::map <std::string, int> getPosClass(){
+                return this->PosClass;
+            }
             /*std::map <std::string, std::string> getMap(std::string NameOfMap)
             {
                 if (NameOfMap == "VariableTypeNames")

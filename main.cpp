@@ -62,13 +62,14 @@ int main(int argc, char *argv[])
     
     MainMaps::Map mainMap;// создание объекта клсса который отвечает за словарь   
     //example:   ->    mainMap.getVariableValues()["a"]
-
+    Analizer::GetAllMaps setM;
+    setM.SetMaps(mainMap);
 
     Analizer::MainAnalizerCycle AnalizerCycle;
     //MainMaps::Map *LinkOfMap = new MainMaps::Map;
 
 //    std::cout << typeid(Analizer::returnMap(mainMap)).name() << std::endl;
-
+    
     AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap);
 
 
