@@ -9,11 +9,10 @@ include (
     "dict"
 )
 
-
-
 if (3 == 3)
 {
-    print(123);
+    
+    print(a);
 }
 
 if (2 != 1)
