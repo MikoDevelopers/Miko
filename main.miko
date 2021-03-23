@@ -10,11 +10,7 @@ include (
 )
 
 
-int a = 1;
-int b = 1;
-
-
-if (a == b)
+def test()
 {
     print(123);
 }

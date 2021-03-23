@@ -4,7 +4,8 @@
 #include <vector>
 #include <map>
 //#include "../MikoStruct.h"
-#define DEBUG true
+//#define DEBUG true
+
 
 
 
@@ -450,7 +451,24 @@ namespace Analizer {
 
 
     class FindCycles {
+        private:
+            int pos_of_start_condition_ = 0;
+            int pos_of_end_condition_ = 0;
 
+            int pos_of_start_BodyCycle_ = 0;
+            int pos_of_end_BodyCycle_ = 0;
+
+            bool result_of_condition = false;
+        public:
+            void findPosOfCondition(std::vector<std::string> &Datas, int &PositionOfDatas)
+            {
+                this->pos_of_start_condition_ = Datas[PositionOfDatas].find("(") + 1;
+                this->pos_of_end_condition_ = Datas[PositionOfDatas].find(")") - 1;
+
+                std::cout << Datas[PositionOfDatas][this->pos_of_start_condition_] << std::endl;
+                std::cout << Datas[PositionOfDatas][this->pos_of_end_condition_] << std::endl;
+
+            }
     };
 
 
@@ -547,7 +565,6 @@ namespace Analizer {
                         Find_IEE start_iee;
                         start_iee.findIEE_Foo(CopyVector, i);
                     }
-
                     /*} else if (CopyVector[i].find("elif") != -1)
                     {
                         std::cout << CopyVector[i] << std::endl;
@@ -555,6 +572,13 @@ namespace Analizer {
                     {
                         std::cout << CopyVector[i] << std::endl;
                     }*/
+
+
+                    if ((CopyVector[i].find("for (") != -1) || (CopyVector[i].find("for(") != -1))
+                    {
+                        FindCycles start_cycle;
+                        start_cycle.findPosOfCondition(CopyVector, i);
+                    }
 
                 }
             }
