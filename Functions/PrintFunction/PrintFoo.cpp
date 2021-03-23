@@ -60,5 +60,12 @@ namespace math{
     double exp (T1 num){
        return pow(EILER, num);
     }
-
+    template <class m, clas M>
+    long i_rand(m min, M max){
+        return rand()%std::abs(max-min)+min;
+    }
+    template <class m, clas M, class p>
+    double d_rand(m min, m max, p point){
+        return rand()%std::abs(max-min)+min + (rand()%point)*pow(10, point);
+    }
 }
