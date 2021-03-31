@@ -5,12 +5,17 @@ settings (
 )
 
 include (
-    "print",
-    "dict"
+    "standart"
 )
 
 
-def test()
+:def test(int a, int b, str test)
 {
-    print(123);
+    return a + b;
+}
+
+
+:def test2(int a, int b, str test)
+{
+    return a + b;
 }

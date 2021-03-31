@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <vector>
 //#define include_foo
 //#define include_lib
 //#define include_var_methods
@@ -41,13 +42,59 @@ namespace layers_party {
             std::string name = "";
             std::string type = "";//class of def
             std::string MapName = name + "_" + type;//test_class of test_deg
-            int pos[2]{0, 0};
+            std::vector<std::string> PatentsOfLayer;
+            std::map <std::string, std::string> LayerVariableTypeNames;
+            std::map <std::string, std::string> LayerVariableValues;
+            std::vector<int> pos;
         public:
+            void combineVariables(
+                std::map <std::string, std::string> &VariableTypeNames,
+                std::map <std::string, std::string> &VariableValues)
+            {
+                std::swap(this->LayerVariableTypeNames, VariableTypeNames);
+                this->LayerVariableTypeNames.insert(VariableTypeNames.begin(), VariableTypeNames.end());
+
+                std::swap(this->LayerVariableValues, VariableValues);
+                this->LayerVariableValues.insert(VariableValues.begin(), VariableValues.end());
+            }
+
+            void setAttributes(
+                std::string name_, std::string type_, std::string MapName_,
+                std::vector<std::string> PatentsOfLayer_,
+                std::map <std::string, std::string> LayerVariableTypeNames_,
+                std::map <std::string, std::string> LayerVariableValues_,
+                std::vector<int> pos_
+            )
+            {
+                this->name = name_;
+                this->type = type_;
+                this->MapName = MapName_;
+                this->PatentsOfLayer = PatentsOfLayer_;
+                this->LayerVariableTypeNames = LayerVariableTypeNames_;
+                this->LayerVariableValues = LayerVariableValues_;
+                this->pos = pos_;
+            }
+
+            std::string getName(){return this->name;}
+            std::string getType(){return this->type;}
+            std::string getMapName(){return this->MapName;}
+            std::vector<std::string> getPatentsOfLayer(){return this->PatentsOfLayer;}
+            std::map <std::string, std::string> getLayerVariableTypeNames(){return this->LayerVariableTypeNames;}
+            std::map <std::string, std::string> getLayerVariableValues(){return this->LayerVariableValues;}
+            std::vector<int> getPos(){return this->pos;}
     };
 
     class MapOfLayers {
-        public:
+        private:
             std::map <std::string, Layer> LayerPartyRoom;
+        public:
+            template <class L>
+            void launchParty(L __Lr_Data__)
+            {
+                this->LayerPartyRoom[__Lr_Data__.getMapName()] = __Lr_Data__;
+            }
+
+            std::map <std::string, Layer> getLayerPartyRoom(){return this->LayerPartyRoom;}
     };
 }
 

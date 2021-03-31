@@ -10,7 +10,7 @@
 #include "Analizator/CodeAnalizer.hpp"// анализатор исходного кода .miko
 
 
-#define _debug_mode_
+//#define _debug_mode_
 
 
 
@@ -67,23 +67,28 @@ int main(int argc, char *argv[])
         std::cout << "\n\tStart analize " << "main.miko" << " file...\n" << std::endl;
     #endif
 
-    MainMaps::Map mainMap;// создание объекта клсса который отвечает за словарь   
-    //example:   ->    mainMap.getVariableValues()["a"]
+    MainMaps::Map mainMap;          // создание объекта клсса который отвечает за словарь   
+//                                     example:   ->    mainMap.getVariableValues()["a"]
     Analizer::GetAllMaps setM;
     setM.SetMaps(mainMap);
 
     Analizer::MainAnalizerCycle AnalizerCycle;
 
-    AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap);
+    layers_party::Layer __MainLayerPoint__;
+    layers_party::MapOfLayers __LayersParty__;
 
+    AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap, __MainLayerPoint__, __LayersParty__);
 
-
+    std::cout <<  __LayersParty__.getLayerPartyRoom()["test_def"].getName() << std::endl;
+    std::cout <<  __LayersParty__.getLayerPartyRoom()["test2_def"].getName() << std::endl;
 
 
     #ifdef _debug_mode_
         std::cout << "----------------" << std::endl;
         std::cout << "Close program..." << std::endl;//конец программы
     #endif
+
+
 
     return 0;
 }

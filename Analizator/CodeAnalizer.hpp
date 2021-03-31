@@ -473,7 +473,153 @@ namespace Analizer {
 
 
     class FindFoo {
+       private:
+            int start_placeArgs = 0;
+            int end_placeArgs = 0;
 
+            bool first_is_find = false;
+            int start_bodyFunc = 0;
+            int end_bodyFunc = 0;
+            std::string FuncName = "";
+            
+            int number_of_start = 0;
+            int number_of_end = 0;
+
+            std::map <std::string, std::string> InsideVariableTypeNames;
+            std::map <std::string, std::string> InsideVariableValues;
+        public:
+            template <class T, class Y>
+            void FindFoo_(std::vector<std::string> &Datas, int &PositionOfDatas, T &LayersPpartyLink, Y &L_Map)
+            {
+                //std::cout << Datas[PositionOfDatas] << std::endl;
+                this->start_placeArgs = Datas[PositionOfDatas].find("(") + 1;   //get start point for args in function
+                this->end_placeArgs = Datas[PositionOfDatas].find(")") - 1;     //get end point for args in function
+
+                this->FuncName = Datas[PositionOfDatas].substr(                         //get name of function
+                    Datas[PositionOfDatas].find(":def") + 5,
+                    Datas[PositionOfDatas].find("(")
+                    );
+                this->FuncName = this->FuncName.substr(0, this->FuncName.find("("));
+
+
+                for (int i = PositionOfDatas; i < Datas.size(); i++)
+                {
+                    //std::cout << Datas[i] << std::endl;
+                    if (i == PositionOfDatas)
+                    {
+                        if ((Datas[i].find("{") != -1))
+                        {
+                            this->number_of_start += 1;
+                            
+                            if (!this->first_is_find)
+                            {
+                                this->start_bodyFunc = i;
+                                this->first_is_find = true;
+                            }
+
+                        } else if (Datas[i].find("}") != -1)
+                        {
+                            this->number_of_end += 1;
+                        }
+                    } else {
+                        if (Datas[i].find("{") != -1)
+                        {
+                            this->number_of_start += 1;
+
+                            if (!this->first_is_find)
+                            {
+                                this->start_bodyFunc = i;
+                                this->first_is_find = true;
+                            }
+                        } else if (Datas[i].find("}") != -1)
+                        {
+                            this->number_of_end += 1;
+                        }
+
+
+                        if (this->number_of_start == this->number_of_end)     // if values is ... break
+                        {
+                            this->end_bodyFunc = i;
+                            //std::cout << i << std::endl;
+                            break;
+                        }
+                    }
+                }
+
+                //std::cout << this->number_of_start << " " << this->number_of_end << std::endl;
+                //std::cout << this->start_bodyFunc << " body " << this->end_bodyFunc << std::endl;
+                //std::cout << this->FuncName << std::endl;
+
+                updateArgs(Datas, PositionOfDatas, LayersPpartyLink, L_Map);
+            }
+
+            template <class T, class Y>
+            void updateArgs(std::vector<std::string> &Datas, int &PositionOfDatas, T &LayersPpartyLink, Y &L_Map)//std::string NameOfVariable, std::string TypeOfVariable, std::string ValueOfVariable
+            {
+                std::string tempArgsData = "";
+                std::string tempData__ = "";
+
+                for (int i = this->start_placeArgs; i < Datas[PositionOfDatas].length(); i++)
+                {
+                    tempArgsData += Datas[PositionOfDatas][i];
+                }
+
+                for (int i = 0; i < this->end_placeArgs; i++)
+                {
+                    //int a, int b, str "123"
+                    tempData__ = tempArgsData.substr(0, tempArgsData.find(","));
+                    std::string var_type = tempData__.substr(0, tempData__.find(" "));
+                    std::string var_value = tempData__.substr(tempData__.find(" "), tempData__.length());
+
+//                    var_type.replace(var_type.find(" "), 1, "");
+                    var_value.replace(var_value.find(" "), 1, "");
+                    if (var_type.length() == 0)
+                    {
+                        var_type = var_value.substr(0, var_value.find(" "));
+                        var_value = var_value.substr(var_value.find(" ") + 1, var_value.find(")"));
+                        var_value = var_value.substr(0, var_value.find(")"));
+                    }
+
+                    this->InsideVariableTypeNames[var_value] = var_type;
+                    this->InsideVariableValues[var_value] = "None";
+    
+//                    std::cout << var_type << " " << var_type.length() << "    " << var_value << " " << var_value.length() << std::endl;
+
+                    tempArgsData = tempArgsData.substr(tempArgsData.find(",") + 1, tempArgsData.length());
+                }
+
+                pushLayerIntoParty(Datas, PositionOfDatas, LayersPpartyLink, L_Map);
+            }
+
+/*
+    *        std::string name = "";
+    *        std::string type = "";//class of def
+    *        std::string MapName = name + "_" + type;//test_class of test_deg
+            std::vector<std::string> PatentsOfLayer;
+    *        std::map <std::string, std::string> LayerVariableTypeNames;
+    *        std::map <std::string, std::string> LayerVariableValues;
+    *        int pos[2]{0, 0};*/
+            template <class LayerType, class LMap>
+            void pushLayerIntoParty(std::vector<std::string> &Datas, int &PositionOfDatas, LayerType &LayersPpartyLink, LMap &L_Map)
+            {
+                std::string MapNameStr = this->FuncName + "_" + "def";
+                std::vector<std::string> PatentsOfLayer;
+                PatentsOfLayer.push_back("None");
+                
+                std::vector<int> pos;//[2];
+                pos.push_back(this->start_bodyFunc);
+                pos.push_back(this->end_bodyFunc);
+                
+
+                LayerType layerObject;
+
+                layerObject.setAttributes(
+                    FuncName, "def", MapNameStr, PatentsOfLayer,
+                    InsideVariableTypeNames, InsideVariableValues, pos
+                );
+
+                L_Map.launchParty(layerObject);
+            }
     };
 
 
@@ -490,9 +636,10 @@ namespace Analizer {
             {
                 return this->MainVector;
             }
-            template <class T>
-            void runAnalizerCycle(std::vector<std::string> &CopyVector, T &mainMapLink)
+            template <class Map, class Layer, class LMap>
+            void runAnalizerCycle(std::vector<std::string> &CopyVector, Map &mainMapLink, Layer &Lay, LMap &LayersPartyLink) // start analizer
             {
+                // check all key words in miko-file
                 for (int i = 0; i < CopyVector.size(); i++)
                 {
                     if ((CopyVector[i].find("int ") != -1))
@@ -500,10 +647,10 @@ namespace Analizer {
                         std::string variableData = CopyVector[i].substr(CopyVector[i].find("int ") + 4, CopyVector[i].length());
                         
                         std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
-                        
+
                         std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
                         std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-                        
+
 
                         mainMapLink.uppdateMaps(name, "int", value);
 
@@ -580,7 +727,23 @@ namespace Analizer {
                         start_cycle.findPosOfCondition(CopyVector, i);
                     }
 
+
+                    if (((CopyVector[i].find(":def") != -1) || (CopyVector[i].find(":def ") != -1)) &&
+                        (CopyVector[i].find("(") != -1) &&
+                        (CopyVector[i].find(")") != -1))
+                    {
+                        FindFoo findFoo__start;
+                        findFoo__start.FindFoo_(CopyVector, i, Lay, LayersPartyLink);
+                        //findFoo__start.updateArgs();
+                    }
+
                 }
+            }
+
+
+            void runCode(std::vector<std::string> &CopyVector) // run miko-file, get all information after runAnalizerCycle()
+            {
+
             }
     };
 }
