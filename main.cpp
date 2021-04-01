@@ -103,3 +103,5 @@ int main(int argc, char *argv[])
         -D, --debug    ->   Start file with debug-informations
 
 */
+
+//https://prom.ua/p1336780069-mikrokompyuter-raspberry-pico.html?

@@ -624,7 +624,45 @@ namespace Analizer {
 
 
     class FindClass {
+        private:
+            int start_bodyClass = 0;//*
+            int end_bodyClass = 0;//*
+            std::string ClassName = "";//*
 
+            int start_ = 0;
+            int end_ = 0;
+        public:
+            template <class T, class Y>
+            void findClass (std::vector<std::string> &Datas, int &PositionOfDatas, T &LayersPpartyLink, Y &L_Map)
+            {
+                std::string temp_start = Datas[PositionOfDatas].substr(8, Datas[PositionOfDatas].length());//8, 10
+                for (int i; i < temp_start.find(" "); i++)
+                {
+                    this->ClassName += temp_start[i];
+                }
+
+
+                for (int i = PositionOfDatas; i < Datas.size(); i++)
+                {
+                    if (Datas[i].find("{") != -1)
+                    {   this->start_ += 1;
+                        this->start_bodyClass += 1;
+                        std::cout << Datas[i] << "\n";
+                    } else if (Datas[i].find("}") != -1)
+                    {
+                        this->end_bodyClass += 1;
+                        this->end_ += 1;
+                        std::cout << Datas[i] << "\n";
+                    }
+
+                    if (this->start_ == this->end_)
+                    {
+                        break;
+                    }
+                }
+
+                std::cout << this->start_ << " " << this->end_ <<  "\n";
+            }
     };
 
 
@@ -736,6 +774,14 @@ namespace Analizer {
                         findFoo__start.FindFoo_(CopyVector, i, Lay, LayersPartyLink);
                         //findFoo__start.updateArgs();
                     }
+
+
+                    if (CopyVector[i].find(":class ") != -1)
+                    {
+                        FindClass findClss;
+                        findClss.findClass(CopyVector, i, Lay, LayersPartyLink);
+                    }
+
 
                 }
             }
