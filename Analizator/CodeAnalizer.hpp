@@ -665,6 +665,11 @@ namespace Analizer {
             }
     };
 
+    
+    class FindOtherLayers {
+        
+    };
+
 
     class MainAnalizerCycle {
         private:

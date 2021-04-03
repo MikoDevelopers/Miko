@@ -209,3 +209,12 @@ namespace MainMaps {
             }
     };
 }
+
+
+
+
+namespace spelling{
+    class Lexer {
+
+    };
+}

@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <typeinfo>
+#include <stdexcept>
 
 #include "MikoStruct.h"// главный заголовойный файл
 #include "Read/ReadMikoFile.h"// файл для получения исходника .miko
@@ -79,14 +80,15 @@ int main(int argc, char *argv[])
 
     AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap, __MainLayerPoint__, __LayersParty__);
 
-    std::cout <<  __LayersParty__.getLayerPartyRoom()["test_def"].getName() << std::endl;
-    std::cout <<  __LayersParty__.getLayerPartyRoom()["test2_def"].getName() << std::endl;
+//    std::cout <<  __LayersParty__.getLayerPartyRoom()["test_def"].getName() << std::endl;
+//    std::cout <<  __LayersParty__.getLayerPartyRoom()["test2_def"].getName() << std::endl;
 
 
     #ifdef _debug_mode_
         std::cout << "----------------" << std::endl;
         std::cout << "Close program..." << std::endl;//конец программы
     #endif
+
 
 
 
