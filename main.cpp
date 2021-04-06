@@ -10,6 +10,8 @@
 #include "Read/ReadMikoFile.h"// файл для получения исходника .miko
 #include "Analizator/CodeAnalizer.hpp"// анализатор исходного кода .miko
 
+#include "Functions/PrintFunction/PrintFoo.hpp"
+
 
 //#define _debug_mode_
 
@@ -78,7 +80,9 @@ int main(int argc, char *argv[])
     layers_party::Layer __MainLayerPoint__;
     layers_party::MapOfLayers __LayersParty__;
 
-    AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap, __MainLayerPoint__, __LayersParty__);
+    RESERVED_NAMES::NameSpace MainNames;
+
+    AnalizerCycle.runAnalizerCycle(ReadedMikoDatas, mainMap, __MainLayerPoint__, __LayersParty__, MainNames);
 
 //    std::cout <<  __LayersParty__.getLayerPartyRoom()["test_def"].getName() << std::endl;
 //    std::cout <<  __LayersParty__.getLayerPartyRoom()["test2_def"].getName() << std::endl;
@@ -89,9 +93,7 @@ int main(int argc, char *argv[])
         std::cout << "Close program..." << std::endl;//конец программы
     #endif
 
-
-
-
+//    system("pause");
     return 0;
 }
 

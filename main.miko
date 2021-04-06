@@ -5,7 +5,15 @@ settings (
 )
 
 include (
-    "standart"
+    "standart",
+    "TelegramBot"
 )
 
+
+int a = 10;
+
+
+
+print("Hello world");
+print(a);
 

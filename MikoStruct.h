@@ -35,6 +35,26 @@
 #endif
 */
 
+namespace RESERVED_NAMES {
+    class NameSpace {
+        public:
+            std::string KEY_WORDS [25] = {
+                "int", "str", "float", "bool", "list", // type of data
+                "if", "elif", "else",                  // IEE constuction
+                "for", "while",                        // cycles 
+                ":def", ":class",                      // classes and functions
+                "return", "try", "except", "raise",    // other key words
+                "break", "continue",
+                "in", "and", "or", "not", "not in", "is", "is not"
+            };
+            std::string KEY_FUNCTION_NAME [6] = {
+                "print", "input", "open",
+                "sqrt", "exp", "pow"
+            };
+    };
+}
+
+
 
 namespace layers_party {
     class Layer {// name, type, pos
