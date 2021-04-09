@@ -1,6 +1,6 @@
 #include "PrintFoo.h"
 #include <algorithm>
-
+#include <cmath>
 template <typename PrintType>
 void Print(PrintType data)
 {
@@ -67,5 +67,26 @@ namespace math{
     template <class m, clas M, class p>
     double d_rand(m min, m max, p point){
         return rand()%std::abs(max-min)+min + (rand()%point)*pow(10, point);
+    }
+    template <class T, class T1>
+    T sqrt(T num, T1 step){
+        T result = 0;
+        if(step == 1)
+            return num;
+        else if(step == 0)
+            return 1;
+        else if(step == 2)
+            return std::sqrt(num);
+        else if(step%2 == 1){
+            result = num;
+            for(int i = step; i > 2; i/=2){
+                result= std::sqrt(result);
+            }
+            for(int i = 1; i < result; i++){
+                if(pow(i, step) == num)
+                    return i;
+            }
+        }
+            
     }
 }
