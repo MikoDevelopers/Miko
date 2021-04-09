@@ -2,38 +2,7 @@
 #include <string>
 #include <map>
 #include <vector>
-//#define include_foo
-//#define include_lib
-//#define include_var_methods
 
-/*
-#ifdef include_foo
-    #include "Functions/PrintFunction/PrintFoo.h"
-    #include "Functions/PrintFunction/LengthFoo.h"
-    #include "Functions/PrintFunction/SizeFoo.h"
-#endif
-
-#ifdef include_lib
-    #include "Libs/Math/MathLib.h"
-    #include "Libs/Time/TimeLib.h"
-    #include "Libs/Random/RandomLib.h"
-    #include "Libs/Os_Sys/Os_SysLib.h"
-    #include "Libs/Requests/RequestsLib.h"
-
-    #include "API/Discord/DiscordApi.h"
-    #include "API/Instagram/InstagramApi.h"
-    #include "API/Telegram/TelegramApi.h"
-    #include "API/Vk/VkApi.h"
-#endif
-
-#ifdef include_var_methods
-    #include "Methods/int/IntMethods.h"
-    #include "Methods/str/StrMethods.h"
-    #include "Methods/bool/BoolMethods.h"
-    #include "Methods/list/ListMethods.h"
-    #include "Methods/float/FloatMethods.h"
-#endif
-*/
 
 namespace RESERVED_NAMES {
     class NameSpace {
@@ -47,9 +16,9 @@ namespace RESERVED_NAMES {
                 "break", "continue",
                 "in", "and", "or", "not", "not in", "is", "is not"
             };
-            std::string KEY_FUNCTION_NAME [6] = {
-                "print", "input", "open",
-                "sqrt", "exp", "pow"
+            std::string KEY_FUNCTION_NAME [8] = {
+                "print", "input", "open", "len",
+                "to_int", "to_str", "to_list", "to_float"
             };
     };
 }

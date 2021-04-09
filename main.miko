@@ -10,10 +10,8 @@ include (
 )
 
 
-int a = 10;
 
 
+int test = input(">");
 
-print("Hello world");
-print(a);
 

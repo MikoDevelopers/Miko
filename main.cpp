@@ -10,7 +10,7 @@
 #include "Read/ReadMikoFile.h"// файл для получения исходника .miko
 #include "Analizator/CodeAnalizer.hpp"// анализатор исходного кода .miko
 
-#include "Functions/PrintFunction/PrintFoo.hpp"
+
 
 
 //#define _debug_mode_
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     #ifdef _debug_mode_
         std::cout << "Start reading...\n" << std::endl;// начало программы
     #endif
-    std::vector<std::string> ReadedMikoDatas = ReadMikoFileFunction("main.miko");// получение исходного кода программы
+    std::vector<std::string> ReadedMikoDatas = ReadMikoFileFunction(argv[1]);// получение исходного кода программы
 
     #ifdef _debug_mode_
         std::cout << "Datas was readed..." << std::endl;
@@ -94,10 +94,12 @@ int main(int argc, char *argv[])
     #endif
 
 //    system("pause");
+
+
     return 0;
 }
 
-//g++ main.cpp Analizator/CodeAnalizer.cpp Read/ReadMikoFile.cpp -o main && main
+//g++ main.cpp Analizator/CodeAnalizer.cpp Read/ReadMikoFile.cpp -o main && main main.miko
 //x86_64-w64-mingw32-gcc -mconsole -DSIZEOF_VOID_P=8 -DMS_WIN64 lib.c -ID:\Python37\Python\include -LD:\Python37\Python\libs -lpython37 -o output
 //x86_64-w64-mingw32-gcc main.cpp Analizator/CodeAnalizer.cpp Read/ReadMikoFile.cpp -mconsole -DSIZEOF_VOID_P=8 -DMS_WIN64 Python\lib.c -ID:\Python37\Python\include -LD:\Python37\Python\libs -lpython37 -o main
 

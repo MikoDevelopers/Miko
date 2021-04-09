@@ -3,9 +3,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
-//#include "../MikoStruct.h"
+
 //#define DEBUG true
 
+#include "IncludeLibs.h" // file for include all availble function
 
 
 
@@ -40,11 +41,10 @@ namespace Analizer {
     };
 
 
-    class RerFoo{
+    class RerFoo {
         public:
             void ReturnTrueOrFalse(std::string IfDatas)
             {
-                
                 if (IfDatas.find("==") != -1)
                 {
                     auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("=="));
@@ -52,12 +52,19 @@ namespace Analizer {
                     LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
                     RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
 
+/*                    if (IfDatas.find("'") == -1 && IfDatas.find('"') == -1)
+                    {
+                        std::string LeftIfDatasValue = MapLink.getVariableValues()[LeftIfDatas];
+                        std::string RigthIfDatasValue = MapLink.getVariableValues()[RigthIfDatas];
 
-                    //std::cout << GetAllMaps.VariableTypeNames << std::endl;
-                    /*if (LeftIfDatas == RigthIfDatas)
+                        std::cout << LeftIfDatasValue << " " << RigthIfDatasValue << std::endl;
+                        std::cout << "************" << std::endl;
+                    }
+*/
+                    if (LeftIfDatas == RigthIfDatas)
                     {
                         std::cout << LeftIfDatas << "  ==  " << RigthIfDatas << std::endl;
-                    }*/
+                    }
                 }
 
                 if (IfDatas.find("!=") != -1)
@@ -673,7 +680,7 @@ namespace Analizer {
             }
     };
 
-
+/*
     class FindOtherLayers {
         private:
             std::vector<std::string> MainVector;
@@ -756,7 +763,7 @@ namespace Analizer {
                     if (CopyVector[i].find("if") != -1)
                     {
                         Find_IEE start_iee;
-                        start_iee.findIEE_Foo(CopyVector, i);
+                        start_iee.findIEE_Foo(CopyVector, i, MapLink);
                     }
                     /*} else if (CopyVector[i].find("elif") != -1)
                     {
@@ -764,7 +771,7 @@ namespace Analizer {
                     } else if (CopyVector[i].find("else") != -1)
                     {
                         std::cout << CopyVector[i] << std::endl;
-                    }*/
+                    }
 
 
                     if ((CopyVector[i].find("for (") != -1) || (CopyVector[i].find("for(") != -1))
@@ -785,6 +792,7 @@ namespace Analizer {
             }
     };
 
+*/
 
     class MainAnalizerCycle {
         private:
@@ -797,17 +805,42 @@ namespace Analizer {
             template <class Map, class Layer, class LMap, class names>
             void runAnalizerCycle(std::vector<std::string> &CopyVector, Map &mainMapLink, Layer &Lay, LMap &LayersPartyLink, names ReservedNames) // start analizer
             {
+                names namesLink;
                 // check all key words in miko-file
                 for (int i = 0; i < CopyVector.size(); i++)
                 {
                     if ((CopyVector[i].find("int ") != -1))
                     {
+                        std::string value = "";
+                        bool isInput = false;
+                        int posT = 0x00;
+                        int posV = i;
+                        for (int posInK = posT; posInK < NUM_OF_FUNCKTIONS; posInK++)
+                        {
+                            if (CopyVector[posV].find(namesLink.KEY_FUNCTION_NAME[posInK]) != -1)
+                            {
+                                if (namesLink.KEY_FUNCTION_NAME[posInK] == "input")
+                                {
+                                    std::string text = Input(CopyVector[i]);
+                                    isInput = true;
+                                    value = text;
+                                }
+
+                                break;
+                            }
+                        }
+                        posT = 0x00;
+                        posV = 0x00;
+
                         std::string variableData = CopyVector[i].substr(CopyVector[i].find("int ") + 4, CopyVector[i].length());
-                        
+
                         std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
 
-                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        if (!isInput)
+                        {
+                            std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                            std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        }
 
 
                         mainMapLink.uppdateMaps(name, "int", value);
@@ -815,17 +848,41 @@ namespace Analizer {
 
                     } else if (CopyVector[i].find("str ") != -1)
                     {
+                        std::string value = "";
+                        bool isInput = false;
+                        int posT = 0x00;
+                        int posV = i;
+                        for (int posInK = posT; posInK < NUM_OF_FUNCKTIONS; posInK++)
+                        {
+                            if (CopyVector[posV].find(namesLink.KEY_FUNCTION_NAME[posInK]) != -1)
+                            {
+                                if (namesLink.KEY_FUNCTION_NAME[posInK] == "input")
+                                {
+                                    std::string text = Input(CopyVector[i]);
+                                    isInput = true;
+                                    value = text;
+                                }
+
+                                break;
+                            }
+                        }
+                        posT = 0x00;
+                        posV = 0x00;
+
                         std::string variableData = CopyVector[i].substr(CopyVector[i].find("str ") + 4, CopyVector[i].length());
                         
                         std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
-                        
-                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-                        value = value.substr(1, value.length() - 2);
 
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+
+                        if (!isInput)
+                        {
+                            value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                            value = value.substr(1, value.length() - 2);
+                        }
 
                         mainMapLink.uppdateMaps(name, "str", value);
-                        
+
 
                     } else if (CopyVector[i].find("float ") != -1)
                     {
@@ -846,7 +903,7 @@ namespace Analizer {
                         
                         std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
                         std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-                        
+
 
                         mainMapLink.uppdateMaps(name, "list", value);
                      
@@ -870,13 +927,6 @@ namespace Analizer {
                         Find_IEE start_iee;
                         start_iee.findIEE_Foo(CopyVector, i);
                     }
-                    /*} else if (CopyVector[i].find("elif") != -1)
-                    {
-                        std::cout << CopyVector[i] << std::endl;
-                    } else if (CopyVector[i].find("else") != -1)
-                    {
-                        std::cout << CopyVector[i] << std::endl;
-                    }*/
 
 
                     if ((CopyVector[i].find("for (") != -1) || (CopyVector[i].find("for(") != -1))
@@ -892,7 +942,6 @@ namespace Analizer {
                     {
                         FindFoo findFoo__start;
                         findFoo__start.FindFoo_(CopyVector, i, Lay, LayersPartyLink);
-                        //findFoo__start.updateArgs();
                     }
 
 
@@ -903,58 +952,40 @@ namespace Analizer {
                     }
 
 
-          
 
-//                    std::cout << CopyVector[2] << std::endl;
-  //                  std::cout << CopyVector[5] << std::endl;
-
-//                    std::cout << CopyVector[i] << std::endl;
-                    names namesLink;
-
-                    int posT = 0x00;
-                    int posV = i;
-                    for (int posInK = posT; posInK < 6; posInK++)
+                    for (std::string test : namesLink.KEY_FUNCTION_NAME)
                     {
-                        if (CopyVector[posV].find(namesLink.KEY_FUNCTION_NAME[posInK]) != -1)
+                        if (CopyVector[i].find(test) != -1)
                         {
-                            if(namesLink.KEY_FUNCTION_NAME[posInK] == "print")
+                            if (test == "print")
                             {
-                                Print(CopyVector[posV], mainMapLink);
+                                Print(CopyVector[i], mainMapLink);
+                            } else if (test == "input" && CopyVector[i].find("str") == -1)
+                            {
+                                Input(CopyVector[i]);
+                            } else if (test == "len")
+                            {
+                                Len(CopyVector[i], mainMapLink);
                             }
-                            break;
                         }
                     }
-                    posT = 0x00;
-                    posV = 0x00;
-
-
-
                 }
             }
 
-            template <class Map>
-            void Print(std::string data, Map MapLink)
+            std::string Input(std::string lineInput)
             {
-                bool isVar = false;
+                std::string self = lineInput;
+                self = self.substr(self.find("(") + 1, self.find(";"));
+                self = self.substr(0, self.find(")"));
+                self = self.substr(1, self.length());
+                self = self.substr(0, self.find('"'));
 
-                if (data.find('"') == -1)
-                {
-                    isVar = true;
-                }
-
-                data = data.substr(data.find("(") + 1, data.find(";"));
-                data = data.substr(0, data.find(")"));
-
-
-                if (isVar)
-                {
-                    auto val = MapLink.getVariableValues()["a"];
-
-                    std::cout << val << std::endl;
-                } else {
-                    std::cout << data << std::endl;
-                }
+                std::cout << self;
+                std::string data;
+                std::cin >> data;
+                return data;
             }
+
 
             void runCode(std::vector<std::string> &CopyVector) // run miko-file, get all information after runAnalizerCycle()
             {
