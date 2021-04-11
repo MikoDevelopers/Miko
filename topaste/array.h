@@ -9,6 +9,16 @@ class arr{
         std::map <std::string, std::vector<bool>> Bool;
         std::map <std::string, std::vector<std::string>> Str;
     public:
+        void set_int(std::string name, std::vector <int> a){
+            Int[name] = a;
+        }
+        void set_bool(std::string name, std::vector <bool> a){
+            Bool[name] = a;
+        }
+        void set_string(std::string name, std::vector <std::string> a){
+            Str[name] = a;
+        }
+   
     char get_type(std::string name){
         if(type.find(name) != type.end())
             return type[name];
@@ -34,37 +44,20 @@ class arr{
         Str[name].push_back(val);
     }
     
-    template <class ar>
-    void set(std::string name, std::vector <ar> arr){
-        ar type;
-        switch (sizeof(ar)){
-            case sizeof(int):
-                this->type[name] = 'i';
-                Int[name] = arr;
-                break;
-            case sizeof(bool):
-                this->type[name] = 'b';
-                Bool[name] = arr;
-                break;
-            case sizeof(std::string)
-                this->type[name] = 's';
-                Str[name] = arr;
-                break;
-        }
-    }
+    
     void create(std::string name, char type){
         std::vector<int> created_int;
         std::vector<bool> created_bool;
         std::vector<std::string> created_string;
         switch (type){
             case 'i':
-                set(name, created_int);
+                set_int(name, created_int);
                 break;
             case 'b':
-               set(name, created_bool);
+               set_bool(name, created_bool);
                 break;
             case 's':
-                set(name, created_string);
+                set_string(name, created_string);
                 break;
         }
     }
@@ -97,6 +90,57 @@ class arr{
                 return -1;
                 break;
 
+        }
+    }
+    bool del(std::string name, unsigned long elem){
+        switch(get_type(name)){
+            case 'i':
+                if(elem < Int[name].size()) return 0;
+                Int[name].erase(Int[name].begin() + elem);
+                return 1;
+                break;
+            case 'b':
+                if(elem < Bool[name].size()) return 0;
+                Bool[name].erase(Bool[name].begin() + elem);
+                return 1;
+                break;
+            case 's':
+                if(elem < Str[name].size()) return 0;
+                Str[name].erase(Str[name].begin() + elem);
+                return 1;
+                break;
+            default:
+                return -1;
+                break;
+
+        }
+    }
+    bool del(std::string name){
+        std::map<std::string, char>::iterator itType;
+        std::map<std::string,std::vector<int>>::iterator itInt;
+        std::map<std::string,std::vector<bool>>::iterator itBool;
+        std::map<std::string, std::vector<std::string>>::iterator itString;
+        switch(get_type(name)){
+            case 'i':
+                itType = type.find(name);
+                type.erase(itType);
+                itInt = Int.find(name);
+                Int.erase(itInt);
+                return 1;
+             case 'b':
+                itType = type.find(name);
+                type.erase(itType);
+                itBool = Bool.find(name);
+                Bool.erase(itBool);
+                return 1;
+             case 's':
+                itType = type.find(name);
+                type.erase(itType);
+                itString = Str.find(name);
+                Str.erase(itString);
+                return 1;
+            
+            default: return 0;
         }
     }
 };
