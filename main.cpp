@@ -10,7 +10,7 @@
 #include "Read/ReadMikoFile.h"// файл для получения исходника .miko
 #include "Analizator/CodeAnalizer.hpp"// анализатор исходного кода .miko
 
-
+//#include "Functions/changeType.h"
 
 
 //#define _debug_mode_
@@ -94,8 +94,6 @@ int main(int argc, char *argv[])
     #endif
 
 //    system("pause");
-
-
     return 0;
 }
 

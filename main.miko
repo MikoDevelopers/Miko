@@ -10,8 +10,17 @@ include (
 )
 
 
+int a = 1;
+int b = 2;
+int c = 2;
 
 
-int test = input(">");
+if (a == b)
+{
+    print("a is b");
+}
 
-
+if (b == c)
+{
+    print("b is c");
+}

@@ -14,12 +14,12 @@ const int NUM_OF_FUNCKTIONS = 8;
 const int NUM_OF_KEY_WORDS = 25;
 const int ALL_OF_KEY = NUM_OF_FUNCKTIONS + NUM_OF_KEY_WORDS;
 
-#include "../Functions/print.hpp"
 
 #ifdef include_foo
     #include "../Functions/print.hpp"
 //    #include "../Functions/input.h"
     #include "../Functions/len.h"
+   // #include "../Functions/changeType.h"
 #endif
 
 #ifdef include_lib

@@ -21,7 +21,6 @@ void Print(std::string data, Map MapLink)
     if (isVar)
     {
         auto val = MapLink.getVariableValues()[data];
-
         std::cout << val << std::endl;
     } else {
         std::cout << data << std::endl;

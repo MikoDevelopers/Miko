@@ -9,7 +9,6 @@
 #include "IncludeLibs.h" // file for include all availble function
 
 
-
 namespace Analizer {
     class GetAllMaps {
         public:
@@ -43,99 +42,47 @@ namespace Analizer {
 
     class RerFoo {
         public:
-            void ReturnTrueOrFalse(std::string IfDatas)
+        template <typename Map>
+            int ReturnTrueOrFalse(std::string IfDatas, int &PositionOfDatas, Map MapLink)
             {
-                if (IfDatas.find("==") != -1)
+                auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("=="));
+                auto RigthIfDatas = IfDatas.substr(IfDatas.find("==") + 2, IfDatas.length());
+                LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
+                RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
+                std::string LeftIfDatasValue = "";
+                std::string RigthIfDatasValue = "";
+                int LeftNum = 0x00;
+                int RightNum = 0x00;
+
+                if (LeftIfDatas.find("'") == -1 || LeftIfDatas.find('"') == -1)
                 {
-                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("=="));
-                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("==") + 2, IfDatas.length());
-                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-/*                    if (IfDatas.find("'") == -1 && IfDatas.find('"') == -1)
+                    LeftIfDatasValue = MapLink.getVariableValues()[LeftIfDatas];
+                //    std::cout << "l" << std::endl;
+                    if (MapLink.getVariableTypeNames()[LeftIfDatas] == "int")
                     {
-                        std::string LeftIfDatasValue = MapLink.getVariableValues()[LeftIfDatas];
-                        std::string RigthIfDatasValue = MapLink.getVariableValues()[RigthIfDatas];
-
-                        std::cout << LeftIfDatasValue << " " << RigthIfDatasValue << std::endl;
-                        std::cout << "************" << std::endl;
+                        LeftNum = std::stoi(LeftIfDatasValue);
                     }
-*/
-                    if (LeftIfDatas == RigthIfDatas)
+                }
+                if (RigthIfDatas.find("'") == -1 || RigthIfDatas.find('"') == -1)
+                {
+                    RigthIfDatasValue = MapLink.getVariableValues()[RigthIfDatas];
+                  //  std::cout << "r" << std::endl;
+                    if (MapLink.getVariableTypeNames()[RigthIfDatas] == "int")
                     {
-                        std::cout << LeftIfDatas << "  ==  " << RigthIfDatas << std::endl;
+                        RightNum = std::stoi(RigthIfDatasValue);
                     }
                 }
 
-                if (IfDatas.find("!=") != -1)
+                //std::cout << LeftIfDatasValue << "  **  " << RigthIfDatasValue << std::endl;
+                if (LeftIfDatasValue == RigthIfDatasValue)
                 {
-                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("!="));
-                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("!=") + 2, IfDatas.length());
-                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                    if (LeftIfDatas != RigthIfDatas)
-                    {
-                        std::cout << LeftIfDatas << "  !=  " << RigthIfDatas << std::endl;
-                    }
+                    //std::cout << LeftNum << "  ==  " << RightNum << std::endl;
+                    return 1;
+                } else {
+                    return 0;
                 }
 
-                if (IfDatas.find(">") != -1)
-                {
-                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find(">"));
-                    auto RigthIfDatas = IfDatas.substr(IfDatas.find(">") + 2, IfDatas.length());
-                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                    if (LeftIfDatas > RigthIfDatas)
-                    {
-                        std::cout << LeftIfDatas << "  >  " << RigthIfDatas << std::endl;
-                    }
-                }
-
-                if (IfDatas.find("<") != -1)
-                {
-                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("<"));
-                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("<") + 2, IfDatas.length());
-                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                    if (LeftIfDatas < RigthIfDatas)
-                    {
-                        std::cout << LeftIfDatas << "  <  " << RigthIfDatas << std::endl;
-                    }
-                }
-
-                if (IfDatas.find(">=") != -1)
-                {
-                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find(">="));
-                    auto RigthIfDatas = IfDatas.substr(IfDatas.find(">=") + 2, IfDatas.length());
-                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                    if (LeftIfDatas >= RigthIfDatas)
-                    {
-                        std::cout << LeftIfDatas << "  >=  " << RigthIfDatas << std::endl;
-                    }
-                }
-
-                if (IfDatas.find("<=") != -1)
-                {
-                    auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("<="));
-                    auto RigthIfDatas = IfDatas.substr(IfDatas.find("<=") + 2, IfDatas.length());
-                    LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
-                    RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
-
-
-                    if (LeftIfDatas <= RigthIfDatas)
-                    {
-                        std::cout << LeftIfDatas << "  <=  " << RigthIfDatas << std::endl;
-                    }
-                }
+                return 0;
             }
     };
 
@@ -391,8 +338,10 @@ namespace Analizer {
             std::string IfDatas = "";
             bool IfDatasIsFull = false;
         public:
-            int findIEE_Foo(std::vector<std::string> &Datas, int &PositionOfDatas)
+            template <class Map>
+            int findIEE_Foo(std::vector<std::string> &Datas, int &PositionOfDatas, Map MapLink)
             {
+                int result;
                 for (int i = PositionOfDatas; i < Datas.size(); i++)
                 {
                     if (this->DataIsFinded != true)
@@ -423,20 +372,30 @@ namespace Analizer {
                     )
                     {
                         RerFoo run_check_foo;
-                        run_check_foo.ReturnTrueOrFalse(IfDatas);
+                        result = run_check_foo.ReturnTrueOrFalse(IfDatas, PositionOfDatas, MapLink);
+                    } else {
+                        // code
                     }
 
-
-                    /*if (Datas[i].find("{") != -1)
+                    if (Datas[i].find("{") != -1)
                     {
                         this->startPoint = i;
                     } else if (Datas[i].find("}") != -1)
                     {
-                        this->endPoint = i;
-                    }*/
+                        if (result == 0)
+                        {
+                            this->endPoint = i;
 
+                            for (int pos = this->startPoint; pos < this->endPoint; pos++)
+                            {
+                                Datas[pos] = "";
+                            }
+                        }
 
-                    return_back();// возврат значений по умолчанию
+                        break;
+                    }
+
+ //                   return_back();// возврат значений по умолчанию
                 }
 
 
@@ -553,9 +512,9 @@ namespace Analizer {
                     }
                 }
 
-//                std::cout << this->number_of_start << " " << this->number_of_end << std::endl;
-  //              std::cout << this->start_bodyFunc << " body " << this->end_bodyFunc << std::endl;
-    //            std::cout << this->FuncName << std::endl;
+                std::cout << this->number_of_start << " " << this->number_of_end << std::endl;
+                std::cout << this->start_bodyFunc << " body " << this->end_bodyFunc << std::endl;
+                std::cout << this->FuncName << std::endl;
 
                 updateArgs(Datas, PositionOfDatas, LayersPpartyLink, L_Map);
             }
@@ -602,7 +561,6 @@ namespace Analizer {
 
                     tempArgsData = tempArgsData.substr(tempArgsData.find(",") + 1, tempArgsData.length());
                 }
-
                 pushLayerIntoParty(Datas, PositionOfDatas, LayersPpartyLink, L_Map);
             }
 
@@ -834,17 +792,17 @@ namespace Analizer {
 
                         std::string variableData = CopyVector[i].substr(CopyVector[i].find("int ") + 4, CopyVector[i].length());
 
-                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        std::string name = variableData.substr(0, variableData.find("="));
+                        name = name.substr(0, name.find(" "));
 
                         if (!isInput)
                         {
                             std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                            std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                            value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
                         }
 
 
                         mainMapLink.uppdateMaps(name, "int", value);
-
 
                     } else if (CopyVector[i].find("str ") != -1)
                     {
@@ -870,7 +828,7 @@ namespace Analizer {
                         posV = 0x00;
 
                         std::string variableData = CopyVector[i].substr(CopyVector[i].find("str ") + 4, CopyVector[i].length());
-                        
+
                         std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
 
                         std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
@@ -881,8 +839,8 @@ namespace Analizer {
                             value = value.substr(1, value.length() - 2);
                         }
 
-                        mainMapLink.uppdateMaps(name, "str", value);
 
+                        mainMapLink.uppdateMaps(name, "str", value);
 
                     } else if (CopyVector[i].find("float ") != -1)
                     {
@@ -893,8 +851,9 @@ namespace Analizer {
                         std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
                         std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
 
-                        mainMapLink.uppdateMaps(name, "float", value);
 
+                        mainMapLink.uppdateMaps(name, "float", value);
+                        
                     } else if (CopyVector[i].find("list ") != -1)
                     {
                         std::string variableData = CopyVector[i].substr(CopyVector[i].find("list ") + 5, CopyVector[i].length());
@@ -907,17 +866,17 @@ namespace Analizer {
 
                         mainMapLink.uppdateMaps(name, "list", value);
                      
-                    } else if (CopyVector[i].find("typle ") != -1)
+                    } else if (CopyVector[i].find("bool ") != -1)
                     {
-                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("typle ") + 6, CopyVector[i].length());
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("bool ") + 5, CopyVector[i].length());
                         
                         std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
                         
                         std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
                         std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-                        
 
-                        mainMapLink.uppdateMaps(name, "typle", value);
+
+                        mainMapLink.uppdateMaps(name, "bool", value);
                     }
 
 
@@ -925,7 +884,7 @@ namespace Analizer {
                     if (CopyVector[i].find("if") != -1)
                     {
                         Find_IEE start_iee;
-                        start_iee.findIEE_Foo(CopyVector, i);
+                        start_iee.findIEE_Foo(CopyVector, i, mainMapLink);
                     }
 
 
