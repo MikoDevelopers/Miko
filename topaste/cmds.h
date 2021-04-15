@@ -2,6 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <iostream>
+#define DEBUGMODE 0
 class cmd_reader{
     private:
         std::string filename = "commands.mc";
@@ -14,33 +16,41 @@ class cmd_reader{
                 std::string in;
                 input >> in;
                 commands.push_back(in);
+                if(DEBUGMODE){
+                    std::cout << in << std::endl;
+                }
             }
             
         }
         void prefix_reader(){
-            char in = '!';
-            prefixes = new char[prefix_count];
+            char in = input.get();
+            prefixes = new char [prefix_count];
             while(in != '\n'){
-                prefix_count++;
-                char *copy = prefixes;
-                delete [] prefixes;
-                prefixes = new char[prefix_count];
-                for(int i = 0; i < prefix_count-1; ++i){
-                    prefixes[i] = copy[i];
-                }
                 prefixes[prefix_count-1] = in;
-                input >> in;
+                char *copy = new char [prefix_count];
+                for(int i = 0; i < prefix_count; i++){
+                    copy[i] = prefixes[i];
+                    if(DEBUGMODE) std::cout <<"copied array:"<< copy[i] << ' ' << i << '\n';
+                }
+                prefix_count++;
+                delete[] prefixes;
+                prefixes = new char [prefix_count];
+                for(int i = 0; i < prefix_count-1; i++){
+                    prefixes[i] = copy[i];
+                    if(DEBUGMODE) std::cout << "changed array:" << prefixes[i] << ' ' << i << '\n';
+                }
+                in = input.get();
+                if(in == ' ') in = input.get();
             }
         }
     public:
-        cmd_reader(){
-            input.open(filename);
-            prefix_reader();
-        }
         cmd_reader(std::string filename){
-            this->filename = filename;
-            input.open(filename);
+            if(filename != "/default")
+                this->filename = filename;
+            if(DEBUGMODE) std::cout << this->filename << '\n';
+            input.open(this->filename);
             prefix_reader();
+            cmds_reader();
         }
         ~cmd_reader(){
             delete [] prefixes;
