@@ -53,7 +53,27 @@ class cmd_reader{
             cmds_reader();
         }
         ~cmd_reader(){
+            if(DEBUGMODE) std::cout << "cmd_reader destructor caller\n";
             delete [] prefixes;
+        }
+        cmd_reader operator=(const cmd_reader &cl){
+            delete[]prefixes;
+            prefixes = new char[cl.prefix_count];
+            prefix_count = cl.prefix_count;
+            for(int i = 0; i < prefix_count; i++){
+                prefixes[i] = cl.prefixes[i];
+            }
+            commands = cl.commands;
+        }
+        void print_cmds(){
+            for(int i = 0; i < commands.size(); i++){
+                std::cout << "Command:" << commands[i] << std::endl;
+            }
+        }
+        void print_prefix(){
+            for(int i = 0; i < prefix_count; i++){
+                std::cout << "Prefix:" << prefixes[i] << std::endl;
+            }
         }
         bool is_prefix(char p){
             for(int i = 0; i < prefix_count; ++i){
@@ -64,7 +84,7 @@ class cmd_reader{
         bool is_cmnd(std::string cm){
             for(int i = 0; i < commands.size(); i++){
                 if(commands[i] == cm) return 1;
-            }  
+            }
             return false;    
         }
         void add_cmd(std::string cmd){
