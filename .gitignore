@@ -1,2 +1,6 @@
 .vscode/
-.exe
+env/
+*.exe
+ENV/
+VENV/
+venv/
