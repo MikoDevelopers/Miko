@@ -9,7 +9,18 @@
 #include "IncludeLibs.h" // file for include all availble function
 
 
+
+
 namespace Analizer {
+/*    
+    ["=="] = 0xce;
+    ["!="] = 0xcf;
+    [">"] = 0xd0;
+    ["<"] = 0xd1;
+    [">="] = 0xd2;
+    ["<="] = 0xd3;
+*/
+
     class GetAllMaps {
         public:
             std::map <std::string, std::string> VariableTypeNames;// {"a" : "int", "b" : "str"}
@@ -45,8 +56,20 @@ namespace Analizer {
         template <typename Map>
             int ReturnTrueOrFalse(std::string IfDatas, int &PositionOfDatas, Map MapLink)
             {
-                auto LeftIfDatas = IfDatas.substr(0, IfDatas.find("=="));
-                auto RigthIfDatas = IfDatas.substr(IfDatas.find("==") + 2, IfDatas.length());
+                const int lenSym = 8;
+                std::string masS[lenSym] = {"==", "!=", ">", "<", ">=", "<=", "in", "not in"};
+                std::string symbol = "";
+                for (std::string elem : masS)
+                {
+                    if (IfDatas.find(elem) != -1)
+                    {
+                        symbol = elem;
+                        break;
+                    }
+                }
+
+                auto LeftIfDatas = IfDatas.substr(0, IfDatas.find(symbol));
+                auto RigthIfDatas = IfDatas.substr(IfDatas.find(symbol) + 2, IfDatas.length());
                 LeftIfDatas = LeftIfDatas.substr(0, LeftIfDatas.find(" "));
                 RigthIfDatas = RigthIfDatas.substr(RigthIfDatas.find(" ") + 1, RigthIfDatas.length());
                 std::string LeftIfDatasValue = "";
@@ -54,10 +77,10 @@ namespace Analizer {
                 int LeftNum = 0x00;
                 int RightNum = 0x00;
 
+
                 if (LeftIfDatas.find("'") == -1 || LeftIfDatas.find('"') == -1)
                 {
                     LeftIfDatasValue = MapLink.getVariableValues()[LeftIfDatas];
-                //    std::cout << "l" << std::endl;
                     if (MapLink.getVariableTypeNames()[LeftIfDatas] == "int")
                     {
                         LeftNum = std::stoi(LeftIfDatasValue);
@@ -66,22 +89,33 @@ namespace Analizer {
                 if (RigthIfDatas.find("'") == -1 || RigthIfDatas.find('"') == -1)
                 {
                     RigthIfDatasValue = MapLink.getVariableValues()[RigthIfDatas];
-                  //  std::cout << "r" << std::endl;
                     if (MapLink.getVariableTypeNames()[RigthIfDatas] == "int")
                     {
                         RightNum = std::stoi(RigthIfDatasValue);
                     }
                 }
 
-                //std::cout << LeftIfDatasValue << "  **  " << RigthIfDatasValue << std::endl;
-                if (LeftIfDatasValue == RigthIfDatasValue)
-                {
-                    //std::cout << LeftNum << "  ==  " << RightNum << std::endl;
+                if ((LeftIfDatasValue == RigthIfDatasValue) && symbol == "==")
                     return 1;
-                } else {
-                    return 0;
-                }
+                else if ((LeftIfDatasValue != RigthIfDatasValue) && symbol == "!=")
+                    return 1;
+                else if ((LeftIfDatasValue > RigthIfDatasValue) && symbol == ">")
+                    return 1;
+                else if ((LeftIfDatasValue < RigthIfDatasValue) && symbol == "<")
+                    return 1;
+                else if ((LeftIfDatasValue >= RigthIfDatasValue) && symbol == ">=")
+                    return 1;
+                else if ((LeftIfDatasValue <= RigthIfDatasValue) && symbol == "<=")
+                    return 1;
 
+/*    
+    ["=="] = 0xce;
+    ["!="] = 0xcf;
+    [">"] = 0xd0;
+    ["<"] = 0xd1;
+    [">="] = 0xd2;
+    ["<="] = 0xd3;
+*/
                 return 0;
             }
     };
@@ -326,8 +360,8 @@ namespace Analizer {
             }
     };
 
-
-    class Find_IEE {//if elif else
+    //if elif else
+    class Find_IEE {
         private:
             int startPoint;
             int endPoint;
@@ -339,49 +373,60 @@ namespace Analizer {
             bool IfDatasIsFull = false;
         public:
             template <class Map>
-            int findIEE_Foo(std::vector<std::string> &Datas, int &PositionOfDatas, Map MapLink)
+            int findIEE_Foo(std::vector<std::string> &Datas, int &PositionOfDatas, Map MapLink, std::string marker = "")
             {
                 int result;
                 for (int i = PositionOfDatas; i < Datas.size(); i++)
                 {
-                    if (this->DataIsFinded != true)
-                    {
-                        if (Datas[i].find("(") != -1)
+                    if (marker == "") {
+                        if (this->DataIsFinded != true)
                         {
-                            this->if_data_start = Datas[i].find("(");
+                            if (Datas[i].find("(") != -1)
+                            {
+                                this->if_data_start = Datas[i].find("(");
+                            }
+                            if (Datas[i].find(")") != -1)
+                            {
+                                this->if_data_end = Datas[i].find(")");
+                                this->DataIsFinded = true;
+                            }
                         }
-                        if (Datas[i].find(")") != -1)
+                        if (this->DataIsFinded && this->IfDatasIsFull != true)
                         {
-                            this->if_data_end = Datas[i].find(")");
-                            this->DataIsFinded = true;
+                            for (int DataInfoPos = this->if_data_start + 1; DataInfoPos < this->if_data_end; DataInfoPos++)
+                            {
+                                this->IfDatas += Datas[i][DataInfoPos];
+                            }
+                            this->IfDatasIsFull = true;
                         }
-                    }
-                    if (this->DataIsFinded && this->IfDatasIsFull != true)
-                    {
-                        for (int DataInfoPos = this->if_data_start + 1; DataInfoPos < this->if_data_end; DataInfoPos++)
-                        {
-                            this->IfDatas += Datas[i][DataInfoPos];
-                        }
-                        this->IfDatasIsFull = true;
-                    }
 
-                    if (
-                        (this->IfDatas.find("==") != -1) || (this->IfDatas.find("!=") != -1) ||
-                        (this->IfDatas.find(">") != -1) || (this->IfDatas.find("<") != -1) ||
-                        (this->IfDatas.find("<=") != -1) || (this->IfDatas.find(">=") != -1)
-                    )
-                    {
-                        RerFoo run_check_foo;
-                        result = run_check_foo.ReturnTrueOrFalse(IfDatas, PositionOfDatas, MapLink);
-                    } else {
-                        // code
+                        if (
+                            (this->IfDatas.find("==") != -1) || (this->IfDatas.find("!=") != -1) ||
+                            (this->IfDatas.find(">") != -1) || (this->IfDatas.find("<") != -1) ||
+                            (this->IfDatas.find("<=") != -1) || (this->IfDatas.find(">=") != -1)
+                        )
+                        {
+                            RerFoo run_check_foo;
+                            result = run_check_foo.ReturnTrueOrFalse(IfDatas, PositionOfDatas, MapLink);
+                        } else {
+                            // code
+                        }
                     }
 
                     if (Datas[i].find("{") != -1)
                     {
                         this->startPoint = i;
                     } else if (Datas[i].find("}") != -1)
+                        
                     {
+/*    
+    ["=="] = 0xce;
+    ["!="] = 0xcf;
+    [">"] = 0xd0;
+    ["<"] = 0xd1;
+    [">="] = 0xd2;
+    ["<="] = 0xd3;
+*/
                         if (result == 0)
                         {
                             this->endPoint = i;
@@ -394,8 +439,6 @@ namespace Analizer {
 
                         break;
                     }
-
- //                   return_back();// возврат значений по умолчанию
                 }
 
 
@@ -520,14 +563,6 @@ namespace Analizer {
             }
 
 
-/*            template <class T, class Y>
-            void findOtherLayers(std::vector<std::string> &Datas, int &PositionOfDatas, T &LayersPpartyLink, Y &L_Map)
-            {
-                FindOtherLayers findLeyerClass;
-                findLeyerClass.runAnalizerCycle();
-            }
-*/
-
             template <class T, class Y>
             void updateArgs(std::vector<std::string> &Datas, int &PositionOfDatas, T &LayersPpartyLink, Y &L_Map)//std::string NameOfVariable, std::string TypeOfVariable, std::string ValueOfVariable
             {
@@ -545,7 +580,6 @@ namespace Analizer {
                     std::string var_type = tempData__.substr(0, tempData__.find(" "));
                     std::string var_value = tempData__.substr(tempData__.find(" "), tempData__.length());
 
-//                    var_type.replace(var_type.find(" "), 1, "");
                     var_value.replace(var_value.find(" "), 1, "");
                     if (var_type.length() == 0)
                     {
@@ -557,21 +591,13 @@ namespace Analizer {
                     this->InsideVariableTypeNames[var_value] = var_type;
                     this->InsideVariableValues[var_value] = "None";
     
-//                    std::cout << var_type << " " << var_type.length() << "    " << var_value << " " << var_value.length() << std::endl;
 
                     tempArgsData = tempArgsData.substr(tempArgsData.find(",") + 1, tempArgsData.length());
                 }
                 pushLayerIntoParty(Datas, PositionOfDatas, LayersPpartyLink, L_Map);
             }
 
-/*
-    *        std::string name = "";
-    *        std::string type = "";//class of def
-    *        std::string MapName = name + "_" + type;//test_class of test_deg
-            std::vector<std::string> PatentsOfLayer;
-    *        std::map <std::string, std::string> LayerVariableTypeNames;
-    *        std::map <std::string, std::string> LayerVariableValues;
-    *        int pos[2]{0, 0};*/
+
             template <class LayerType, class LMap>
             void pushLayerIntoParty(std::vector<std::string> &Datas, int &PositionOfDatas, LayerType &LayersPpartyLink, LMap &L_Map)
             {
@@ -638,119 +664,6 @@ namespace Analizer {
             }
     };
 
-/*
-    class FindOtherLayers {
-        private:
-            std::vector<std::string> MainVector;
-        public:
-            std::vector<std::string> getMainVector()
-            {
-                return this->MainVector;
-            }
-            template <class Map, class Layer, class LMap>
-            void runAnalizerCycle(std::vector<std::string> &CopyVector, Map &mainMapLink, Layer &Lay, LMap &LayersPartyLink) // start analizer
-            {
-                // check all key words in miko-file
-                for (int i = 0; i < CopyVector.size(); i++)
-                {
-                    if ((CopyVector[i].find("int ") != -1))
-                    {
-                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("int ") + 4, CopyVector[i].length());
-
-                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
-
-                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-
-
-                        mainMapLink.uppdateMaps(name, "int", value);
-
-
-                    } else if (CopyVector[i].find("str ") != -1)
-                    {
-                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("str ") + 4, CopyVector[i].length());
-                        
-                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
-                        
-                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-                        value = value.substr(1, value.length() - 2);
-
-
-                        mainMapLink.uppdateMaps(name, "str", value);
-                        
-
-                    } else if (CopyVector[i].find("float ") != -1)
-                    {
-                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("float ") + 6, CopyVector[i].length());
-                        
-                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
-                        
-                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-
-                        mainMapLink.uppdateMaps(name, "float", value);
-
-                    } else if (CopyVector[i].find("list ") != -1)
-                    {
-                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("list ") + 5, CopyVector[i].length());
-                        
-                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
-                        
-                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-                        
-
-                        mainMapLink.uppdateMaps(name, "list", value);
-                     
-                    } else if (CopyVector[i].find("typle ") != -1)
-                    {
-                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("typle ") + 6, CopyVector[i].length());
-                        
-                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
-                        
-                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
-                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
-                        
-
-                        mainMapLink.uppdateMaps(name, "typle", value);
-                    }
-
-
-
-                    if (CopyVector[i].find("if") != -1)
-                    {
-                        Find_IEE start_iee;
-                        start_iee.findIEE_Foo(CopyVector, i, MapLink);
-                    }
-                    /*} else if (CopyVector[i].find("elif") != -1)
-                    {
-                        std::cout << CopyVector[i] << std::endl;
-                    } else if (CopyVector[i].find("else") != -1)
-                    {
-                        std::cout << CopyVector[i] << std::endl;
-                    }
-
-
-                    if ((CopyVector[i].find("for (") != -1) || (CopyVector[i].find("for(") != -1))
-                    {
-                        FindCycles start_cycle;
-                        start_cycle.findPosOfCondition(CopyVector, i);
-                    }
-
-
-                    if (((CopyVector[i].find(":def") != -1) || (CopyVector[i].find(":def ") != -1)) &&
-                        (CopyVector[i].find("(") != -1) &&
-                        (CopyVector[i].find(")") != -1))
-                    {
-                        FindFoo findFoo__start;
-                        findFoo__start.FindFoo_(CopyVector, i, Lay, LayersPartyLink);
-                    }
-                }
-            }
-    };
-
-*/
 
     class MainAnalizerCycle {
         private:
@@ -885,6 +798,14 @@ namespace Analizer {
                     {
                         Find_IEE start_iee;
                         start_iee.findIEE_Foo(CopyVector, i, mainMapLink);
+                    } else if (CopyVector[i].find("elf") != -1)
+                    {
+                        Find_IEE start_iee;
+                        start_iee.findIEE_Foo(CopyVector, i, mainMapLink);
+                    } else if (CopyVector[i].find("else") != -1)
+                    {
+                        Find_IEE start_iee;
+                        start_iee.findIEE_Foo(CopyVector, i, mainMapLink, "else");
                     }
 
 
@@ -952,3 +873,119 @@ namespace Analizer {
             }
     };
 }
+
+
+
+/*
+    class FindOtherLayers {
+        private:
+            std::vector<std::string> MainVector;
+        public:
+            std::vector<std::string> getMainVector()
+            {
+                return this->MainVector;
+            }
+            template <class Map, class Layer, class LMap>
+            void runAnalizerCycle(std::vector<std::string> &CopyVector, Map &mainMapLink, Layer &Lay, LMap &LayersPartyLink) // start analizer
+            {
+                // check all key words in miko-file
+                for (int i = 0; i < CopyVector.size(); i++)
+                {
+                    if ((CopyVector[i].find("int ") != -1))
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("int ") + 4, CopyVector[i].length());
+
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+
+
+                        mainMapLink.uppdateMaps(name, "int", value);
+
+
+                    } else if (CopyVector[i].find("str ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("str ") + 4, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        value = value.substr(1, value.length() - 2);
+
+
+                        mainMapLink.uppdateMaps(name, "str", value);
+                        
+
+                    } else if (CopyVector[i].find("float ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("float ") + 6, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+
+                        mainMapLink.uppdateMaps(name, "float", value);
+
+                    } else if (CopyVector[i].find("list ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("list ") + 5, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        
+
+                        mainMapLink.uppdateMaps(name, "list", value);
+                     
+                    } else if (CopyVector[i].find("typle ") != -1)
+                    {
+                        std::string variableData = CopyVector[i].substr(CopyVector[i].find("typle ") + 6, CopyVector[i].length());
+                        
+                        std::string name = variableData.substr(0, variableData.find("=")).substr(0, variableData.substr(0, variableData.find("=")).find(" "));
+                        
+                        std::string Fvalue = variableData.substr(variableData.find("=") + 1, variableData.length());
+                        std::string value = Fvalue.substr(Fvalue.find(" ") + 1, Fvalue.find(";") - 1);
+                        
+
+                        mainMapLink.uppdateMaps(name, "typle", value);
+                    }
+
+
+
+                    if (CopyVector[i].find("if") != -1)
+                    {
+                        Find_IEE start_iee;
+                        start_iee.findIEE_Foo(CopyVector, i, MapLink);
+                    }
+                    /*} else if (CopyVector[i].find("elif") != -1)
+                    {
+                        std::cout << CopyVector[i] << std::endl;
+                    } else if (CopyVector[i].find("else") != -1)
+                    {
+                        std::cout << CopyVector[i] << std::endl;
+                    }
+
+
+                    if ((CopyVector[i].find("for (") != -1) || (CopyVector[i].find("for(") != -1))
+                    {
+                        FindCycles start_cycle;
+                        start_cycle.findPosOfCondition(CopyVector, i);
+                    }
+
+
+                    if (((CopyVector[i].find(":def") != -1) || (CopyVector[i].find(":def ") != -1)) &&
+                        (CopyVector[i].find("(") != -1) &&
+                        (CopyVector[i].find(")") != -1))
+                    {
+                        FindFoo findFoo__start;
+                        findFoo__start.FindFoo_(CopyVector, i, Lay, LayersPartyLink);
+                    }
+                }
+            }
+    };
+
+*/
